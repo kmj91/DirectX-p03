@@ -1,3 +1,6 @@
+// 메인 앱
+// 게임 로직의 시작 클래스
+
 #include "stdafx.h"
 #include "MainApp.h"
 #include "Logo.h"
@@ -52,34 +55,40 @@ CMainApp::CMainApp()
 	SafeAddRef(m_pManagement);
 }
 
+// 초기화
+// 매니저, 디바이스 그리고 리소스 등 전반적인 게임 진행에 필요한 준비를 함
+// Create 함수에서 호출
+// 반환 값 : 초기화 실패 E_FAIL, 성공 S_OK
 HRESULT CMainApp::ReadyMainApp()
 {
+	// 디바이스 및 매니저 초기화
 	if (FAILED(m_pManagement->ReadyEngine(g_hWnd, WINCX, WINCY,
 		EDisplayMode::Full, (_uint)ESceneID::MaxCount)))
 	{
 		PRINT_LOG(L"Error", L"Failed To ReadyEngine");
 		return E_FAIL;
 	}
-
+	// 디바이스 멤버 변수로 저장
 	m_pDevice = m_pManagement->GetDevice();
 	if (nullptr == m_pDevice)
 		return E_FAIL;
-
+	// ImGUI 초기화
 	ImGuiHelper::Init(g_hWnd, m_pDevice);
 
 	//SafeAddRef(m_pDevice);	// ImGui Init함수 안에서 이미 증가시키고 있음
 
+	// 리소스 로드
 	if (FAILED(ReadyStaticResources()))
 		return E_FAIL;
-
+	// 디바이스 초기화
 	if (FAILED(ReadyDefaultSetting()))
 		return E_FAIL;
-
+	// 파티클 시스템 초기화
 	ParticleSystem::Initialize(m_pManagement, m_pDevice);
 	auto& _ParticleSys = ParticleSystem::Instance();
 
 
-
+	// 씬 초기화
 	if (FAILED(m_pManagement->SetUpCurrentScene((_int)ESceneID::Logo,
 		CLogo::Create(m_pDevice))))
 	{
@@ -93,26 +102,32 @@ HRESULT CMainApp::ReadyMainApp()
 		return E_FAIL;
 	}
 
-	srand(0);	// 랜덤 시드값
-
+	// 랜덤 시드값
+	srand(0);
+	// 사운드 매니저 초기화
 	CSoundMgr::Get_Instance()->Initialize();
 
 	return S_OK;
 }
 
+// 게임 로직 업데이트
 int CMainApp::UpdateMainApp()
 
 {
 	ImGuiHelper::UpdateStart();
+	// 매니저 업데이트
 	m_pManagement->UpdateEngine();
 	ImGuiHelper::Update();
 	ImGuiHelper::DebugInfo(g_hWnd);
 	ImGui::Checkbox("Debug ?", &m_pManagement->bDebug);
 	ImGuiHelper::CheckBoxCall();
 	ImGuiHelper::UpdateEnd();
+	// 렌더
 	m_pManagement->RenderEngine();
 	ImGuiHelper::Render(m_pDevice);
+	// 렌더 종료
 	m_pDevice->EndScene();
+	// 윈도우 화면에 출력
 	m_pDevice->Present(nullptr, nullptr, g_hWnd, nullptr);
 
 	Effect::ClearRegisteredLighting();
@@ -120,6 +135,7 @@ int CMainApp::UpdateMainApp()
 	return 0;
 }
 
+// 리소스 로드
 HRESULT CMainApp::ReadyStaticResources()
 {
 	/* For.GameObject */
@@ -1520,6 +1536,7 @@ HRESULT CMainApp::ReadyStaticResources()
 	return S_OK;
 }
 
+// 디바이스 기본 설정
 HRESULT CMainApp::ReadyDefaultSetting()
 {
 	if (FAILED(m_pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE)))
@@ -1528,6 +1545,9 @@ HRESULT CMainApp::ReadyDefaultSetting()
 	return S_OK;
 }
 
+// 객체 생성
+// Cilent 에서 호출
+// 반환 값 : 생성한 객체
 CMainApp* CMainApp::Create()
 {
 	CMainApp* pInstance = new CMainApp;
