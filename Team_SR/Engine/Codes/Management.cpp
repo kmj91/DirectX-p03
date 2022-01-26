@@ -247,8 +247,8 @@ HRESULT CManagement::AddGameObjectPrototype(
 // 프로토타입 오브젝트를 복제하여 레이어에 추가
 // iFromSceneIndex : 복제할 프로토타입 씬 번호
 // GameObjectTag : 복제할 프로토타입 이름
-// iToSceneIndex : 복사할 씬 번호
-// LayerTag : 복사할 레이어 이름
+// iToSceneIndex : 저장할 씬 번호
+// LayerTag : 저장할 레이어 이름
 // ppGameObject : 외부로 나갈 Out 변수 복사된 객체 포인터
 // pArg : 복사한 게임 오브젝트에 전달할 인수
 // 반환 값 : 성공 S_OK, 실패 E_FAIL
