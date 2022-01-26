@@ -69,7 +69,8 @@ _uint CManagement::UpdateEngine()
 		return 0;
 
 	/* For.DeltaTime */
-	float fDeltaTime = m_pTimeManager->Update_Time_Manager();
+	// 델타타임
+	float fDeltaTime = m_pTimeManager->GetDeltaTime();
 
 	// 2020.12.16 16:27 KMJ
 	// 예약된 처리

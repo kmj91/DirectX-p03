@@ -14,15 +14,15 @@ private:
 
 public:
 	void Ready_Time_Manager(); 
-	float Update_Time_Manager(); 
+	float GetDeltaTime(); 
 
 public:
 	virtual void Free() override;
 
 private:
-	LARGE_INTEGER m_CPUCount;
-	LARGE_INTEGER m_StartTime; 
-	LARGE_INTEGER m_GoalTime; 
+	LARGE_INTEGER m_CPUCount;		// 초당 카운터 빈도 수
+	LARGE_INTEGER m_LastTime;		// 마지막 시간
+	LARGE_INTEGER m_CurrentTime;	// 현재 시간
 
 };
 END
