@@ -1,3 +1,6 @@
+// 타임 매니저
+// CPU 틱으로 델타타임 반환
+
 #pragma once
 #ifndef __TIME_MANAGER_H__
 #include "Base.h"
