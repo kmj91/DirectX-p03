@@ -1,3 +1,6 @@
+// 매니지먼트
+// 디바이스 및 매니저들 관리
+
 #pragma once
 #ifndef __MANAGEMENT_H__
 
@@ -20,9 +23,13 @@ private:
 
 public:
 	/* For.General */
+	// 초기화
 	HRESULT ReadyEngine(HWND hWnd, _uint iWinCX, _uint iWinCY, EDisplayMode eDisplaymode, _uint iSceneCount);
+	// 업데이트
 	_uint UpdateEngine();
+	// 렌더
 	HRESULT RenderEngine(HWND hWnd = nullptr);
+	// 씬 클리어
 	HRESULT ClearForScene(_int iSceneIndex);
 public:
 	/* For.GraphicDev */
@@ -31,6 +38,7 @@ public:
 	D3DPRESENT_PARAMETERS& GetD3Dpp();
 public:
 	/* For.SceneManager */
+	// 씬 교체
 	HRESULT SetUpCurrentScene(_int iSceneID, CScene* pCurrentScene);
 	CScene* GetCurrentScene() { return m_pSceneManager->GetCurrentScene(); };
 public: /* For.GameObjectManager */
@@ -38,8 +46,9 @@ public: /* For.GameObjectManager */
 	CComponent* GetComponent(_int iSceneIndex, const wstring& LayerTag, const wstring& ComponentTag, _uint iIndex = 0);
 	FORCEINLINE _int GetCurrentSceneIndex()const& { return CurrentSceneIdx; };
 	std::list<class CGameObject*> GetGameObjects(_int iSceneIndex, const wstring& LayerTag);
-
+	// 게임 오브젝트 프로토타입 추가
 	HRESULT AddGameObjectPrototype(_int iSceneIndex, wstring GameObjectTag, CGameObject* pPrototype);
+	// 게임 오브젝트 추가
 	HRESULT AddGameObjectInLayer(_int iFromSceneIndex, const wstring& GameObjectTag, _int iToSceneIndex, const wstring& LayerTag, CGameObject** ppGameObject = nullptr, void* pArg = nullptr);
 	// 2020.12.16 15:31 KMJ
 	// 예약된 게임 오브젝트 추가 - 다음 프레임 Update 전 처음에 생성됩니다
@@ -49,10 +58,13 @@ public: /* For.GameObjectManager */
 	void AddScheduledReplaceScene(_int iSceneID, CScene* pCurrentScene);
 
 public: /* For.ComponentManager */
+	// 컴포넌트 프로토타입 추가
 	HRESULT AddComponentPrototype(_int iSceneIndex, const wstring& ComponentTag, CComponent* pPrototype);
+	// 프로토타입 컴포넌트 복사
 	CComponent* CloneComponentPrototype(_int iSceneIndex, const wstring& ComponentTag, void* pArg = nullptr);
 
 public: /* For.Renderer */
+	// 렌더러 리스트에 렌더할 오브젝트 추가
 	HRESULT AddGameObjectInRenderer(ERenderID eID, class CGameObject* pGameObject, ERenderPlace ePlace = ERenderPlace::BACK);
 	void RegistLight(const D3DLIGHT9& Light);
 	void SetAmbient(const DWORD Ambient) { m_pRenderer->SetAmbient(Ambient); };
@@ -74,16 +86,16 @@ public:
 	std::function<void()> _ParticleCollision;
 	std::function<void()> _ParticleRender;
 private:
-	CGraphic_Device*	m_pGraphic_Dev = nullptr;
-	CTime_Manager*		m_pTimeManager = nullptr;
-	CSceneManager*		m_pSceneManager = nullptr;
-	CGameObjectManager*	m_pGameObjectManager = nullptr;
-	CComponentManager*	m_pComponentManager = nullptr;
-	CRenderer*			m_pRenderer = nullptr;
+	CGraphic_Device*	m_pGraphic_Dev = nullptr;		// 디바이스
+	CTime_Manager*		m_pTimeManager = nullptr;		// 타임 매니저
+	CSceneManager*		m_pSceneManager = nullptr;		// 씬 매니저
+	CGameObjectManager*	m_pGameObjectManager = nullptr;	// 게임 오브젝트 매니저
+	CComponentManager*	m_pComponentManager = nullptr;	// 컴포넌트 매니저
+	CRenderer*			m_pRenderer = nullptr;			// 렌더 매니저
 
 	_uint m_iUpdateEvent = 0;
 
-	list<ScheduledGameObjectInfo> m_listScheduledObjInfo;
+	list<ScheduledGameObjectInfo> m_listScheduledObjInfo;	// 게임 오브젝트 생성 예약 리스트
 
 	_int m_iReplaceSceneID = 0;
 	CScene* m_pReplaceScene = nullptr;
