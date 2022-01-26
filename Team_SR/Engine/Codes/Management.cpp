@@ -326,6 +326,10 @@ CComponent * CManagement::CloneComponentPrototype(
 }
 
 // 렌더러 리스트에 렌더할 오브젝트 추가
+// eID : 렌더 순서 번호
+// pGameObject : 렌더할 게임 오브젝트 포인터
+// ePlace : 리스트에 들어갈 위치 fornt or back, 디폴트 back
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CManagement::AddGameObjectInRenderer(ERenderID eID, CGameObject * pGameObject, ERenderPlace ePlace/* = ERenderPlace::NONE_PLACE*/)
 {
 	if (nullptr == m_pRenderer)

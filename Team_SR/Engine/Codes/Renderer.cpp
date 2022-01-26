@@ -1,3 +1,6 @@
+// 렌더 매니저
+// 게임 오브젝트를 렌더 순서에 따라 처리
+
 #include "..\Headers\Renderer.h"
 #include "GameObject.h"
 #include "CollisionComponent.h"
@@ -15,6 +18,10 @@ CRenderer::CRenderer(LPDIRECT3DDEVICE9 pDevice)
 }
 
 /* 매 프레임마다 렌더 리스트에 오브젝트를 추가한다. */
+// eID : 렌더 순서 번호
+// pGameObject : 렌더할 게임 오브젝트 포인터
+// ePlace : 리스트에 들어갈 위치 fornt or back, 디폴트 back
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::AddGameObjectInRenderer(ERenderID eID, CGameObject * pGameObject, ERenderPlace ePlace)
 {
 	if (0 > (_int)eID ||
@@ -26,7 +33,7 @@ HRESULT CRenderer::AddGameObjectInRenderer(ERenderID eID, CGameObject * pGameObj
 
 	if (nullptr == pGameObject)
 		return E_FAIL;
-
+	// UI면 place 값에 따라 리스트에 넣는 위치가 다름
 	if (ERenderID::UI == eID)
 	{
 		if (ERenderPlace::BACK == ePlace)
@@ -44,6 +51,9 @@ HRESULT CRenderer::AddGameObjectInRenderer(ERenderID eID, CGameObject * pGameObj
 	return S_OK;
 }
 
+// 렌더
+// hWnd : 윈도우 헨들
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::Render(HWND hWnd)
 {
 	m_pDevice->Clear(0, nullptr, D3DCLEAR_STENCIL | D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(255, 0, 0, 0), 1.f, 0);
@@ -93,6 +103,8 @@ HRESULT CRenderer::Render(HWND hWnd)
 	return S_OK;
 }
 
+// 우선 순위 렌더할 오브젝트
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::RenderPriority()
 {
 	for (auto& pObject : m_GameObjects[(_int)ERenderID::Priority])
@@ -108,6 +120,8 @@ HRESULT CRenderer::RenderPriority()
 	return S_OK;
 }
 
+// 알파가 없는 오브젝트
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::RenderNoAlpha()
 {
 	for (auto& pObject : m_GameObjects[(_int)ERenderID::NoAlpha])
@@ -123,6 +137,8 @@ HRESULT CRenderer::RenderNoAlpha()
 	return S_OK;
 }
 
+// 알파가 들어가는 오브젝트
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::RenderAlpha()
 {
 	/*
@@ -250,6 +266,8 @@ HRESULT CRenderer::RenderAlpha()
 //	return S_OK;
 //}
 
+// UI
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CRenderer::RenderUI()
 {
 	mat PrevView, PrevProjection;
