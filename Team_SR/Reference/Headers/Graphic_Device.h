@@ -1,3 +1,5 @@
+// 그래픽 디바이스
+
 #pragma once
 #ifndef __GRAPHIC_DEVICE_H__
 

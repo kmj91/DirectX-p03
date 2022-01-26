@@ -1,3 +1,5 @@
+// 그래픽 디바이스
+
 #include "Graphic_Device.h"
 
 USING(Engine)
