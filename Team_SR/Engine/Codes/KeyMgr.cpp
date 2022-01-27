@@ -1,3 +1,7 @@
+// 키 매니저
+// 키 처리 담당
+// MainApp Free 함수에서 메모리 정리
+
 #include "KeyMgr.h"
 
 USING(Engine)
