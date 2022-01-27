@@ -1,3 +1,7 @@
+// 게임 스테이지 씬 인터페이스
+// 게임 스테이지의 부모
+// 상속받은 스테이지에서 LoadObjects 함수를 호출하여 게임 오브젝트들을 생성함
+
 #include "stdafx.h"
 #include "..\Headers\Stage.h"
 #include "Player.h"
@@ -294,6 +298,9 @@ void CStage::Free()
 
 
 
+// 오브젝트 생성 정보 파일 로드
+// FilePath : 파일 주소
+// WorldScale : 스케일 값
 void CStage::LoadObjects(const std::wstring& FilePath,const vec3 WorldScale) & noexcept
 {
 	struct ObjectSpawnInfo
@@ -356,6 +363,10 @@ void CStage::LoadObjects(const std::wstring& FilePath,const vec3 WorldScale) & n
 		SpawnObjectFromName(_CurrentObjectSpawnInfo.Name, _CurrentObjectSpawnInfo.Location);
 	}
 };
+
+// 오브젝트 생성
+// ObjectName : 오브젝트 이름
+// SpawnLocation: 생성 좌표
 void CStage::SpawnObjectFromName(const std::wstring& ObjectName, vec3 SpawnLocation) & noexcept
 {
 	// 눈깔 박쥐

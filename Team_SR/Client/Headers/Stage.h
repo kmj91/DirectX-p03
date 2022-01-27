@@ -1,3 +1,7 @@
+// 게임 스테이지 씬 인터페이스
+// 게임 스테이지의 부모
+// 상속받은 스테이지에서 LoadObjects 함수를 호출하여 게임 오브젝트들을 생성함
+
 #pragma once
 #ifndef __STAGE_H__
 
@@ -28,7 +32,9 @@ protected:
 	ESceneID NextSceneID;
 	std::wstring BgmKey{};
 protected:
+	// 오브젝트 생성 정보 파일 로드
 	void LoadObjects(const std::wstring& FilePath, const vec3 WorldScale) & noexcept;
+	// 오브젝트 생성
 	void SpawnObjectFromName(const std::wstring& ObjectName, vec3 SpawnLocation) & noexcept;
 	class CUIManager* m_pUIManager;
 };

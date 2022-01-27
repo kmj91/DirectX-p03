@@ -1,3 +1,7 @@
+// 로고 씬
+// 사실 아무런 기능이 없음...
+// 검은화면에서 엔터를 누르면 게임 스테이지로 넘어감
+
 #include "stdafx.h"
 #include "..\Headers\Logo.h"
 #include "Loading.h"
