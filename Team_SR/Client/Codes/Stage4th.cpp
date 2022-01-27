@@ -1,3 +1,7 @@
+// 게임 스테이지 4 씬
+// 사용하지 않음...
+// 스테이지가 너무 많아서 삭제됨
+
 #include "stdafx.h"
 #include "..\Headers\Stage4th.h"
 #include "Player.h"
