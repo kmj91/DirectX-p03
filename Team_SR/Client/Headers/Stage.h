@@ -19,7 +19,9 @@ public:
 	virtual _uint UpdateScene(float fDeltaTime) override;
 	virtual _uint LateUpdateScene() override;
 protected:
+	// 키 처리
 	virtual _uint KeyProcess(float fDeltaTime) override;
+	// 플레이어 키 처리
 	virtual void PlayerKeyProcess(class CPlayer*const _CurrentPlayer,float fDeltaTime);
 public:
 	virtual void Free() override;

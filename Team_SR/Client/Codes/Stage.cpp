@@ -87,8 +87,11 @@ _uint CStage::LateUpdateScene()
 	return _uint();
 }
 
+// 키 처리
+// fDeltaTime : 델타 타임
 _uint CStage::KeyProcess(float fDeltaTime)
 {
+	// 플레이어 키 처리
 	PlayerKeyProcess(m_pPlayer, fDeltaTime);
 
 
@@ -119,6 +122,9 @@ _uint CStage::KeyProcess(float fDeltaTime)
 	return _uint();
 }
 
+// 플레이어 키 처리
+// _CurrentPlayer : 플레이어 포인터
+// fDeltaTime : 델타 타임
 void CStage::PlayerKeyProcess(CPlayer* const _CurrentPlayer, float fDeltaTime)
 {
 	static constexpr float DiagonalCorrection = 0.707f;
