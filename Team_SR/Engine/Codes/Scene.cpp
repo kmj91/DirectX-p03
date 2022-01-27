@@ -1,3 +1,7 @@
+// 씬 인터페이스
+// 모든 씬의 부모 클래스
+// 참고 사항 : 씬 업데이트에서 키 처리를 하고 있음
+
 #include "..\Headers\Scene.h"
 #include "Management.h"
 USING(Engine)
