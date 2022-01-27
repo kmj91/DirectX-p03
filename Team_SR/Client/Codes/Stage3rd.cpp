@@ -168,7 +168,7 @@ _uint CStage3rd::KeyProcess(float fDeltaTime)
 		CManagement* pManagement = CManagement::Get_Instance();
 		if (nullptr == pManagement)
 			return 0;
-
+		// 중간 보스 스테이지로 씬 교체
 		if (FAILED(pManagement->SetUpCurrentScene((_int)NextSceneID,
 			CStageMidBoss::Create(m_pDevice))))
 		{

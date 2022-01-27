@@ -152,7 +152,7 @@ _uint CStage2nd::KeyProcess(float fDeltaTime)
 		CManagement* pManagement = CManagement::Get_Instance();
 		if (nullptr == pManagement)
 			return 0;
-
+		// 스테이지 3으로 씬 교체
 		if (FAILED(pManagement->SetUpCurrentScene((_int)NextSceneID,
 			CStage3rd::Create(m_pDevice))))
 		{
