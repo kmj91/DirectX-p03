@@ -170,6 +170,8 @@ _uint CStage1st::KeyProcess(float fDeltaTime)
 }
 
 // 플레이어 키 처리
+// _CurrentPlayer : 플레이어 포인터
+// fDeltaTime : 델타 타임
 void CStage1st::PlayerKeyProcess(CPlayer* const _CurrentPlayer,  float fDeltaTime)
 {
 	Super::PlayerKeyProcess(_CurrentPlayer, fDeltaTime);
