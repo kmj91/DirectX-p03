@@ -1,3 +1,6 @@
+// 게임 스테이지 3 씬
+// 참고 사항 : 씬 업데이트에서 키 처리를 하고 있음
+
 #pragma once
 
 
@@ -14,7 +17,9 @@ public:
 	virtual _uint UpdateScene(float fDeltaTime) override;
 	virtual _uint LateUpdateScene() override;
 protected:
+	// 키 처리
 	virtual _uint KeyProcess(float fDeltaTime) override;
+	// 플레이어 키 처리
 	virtual void PlayerKeyProcess(class CPlayer* const _CurrentPlayer, float fDeltaTime)override;
 public:
 	static CStage3rd* Create(LPDIRECT3DDEVICE9 pDevice);

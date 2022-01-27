@@ -1,3 +1,6 @@
+// 게임 스테이지 3 씬
+// 참고 사항 : 씬 업데이트에서 키 처리를 하고 있음
+
 #include "stdafx.h"
 #include "..\Headers\Stage3rd.h"
 #include "Player.h"
@@ -150,6 +153,12 @@ _uint CStage3rd::LateUpdateScene()
 	return 	Super::LateUpdateScene();
 }
 
+// 키 처리
+// 부모 CStage 에서 플레이어 관련 공용 키 처리를 함
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음...
+// 반환 값인 CHANGE_SCNENE 전혀 사용하지 않고 있음
+// 그런데도 씬 교체에 문제가 없는 상황... 운이 좋았음
 _uint CStage3rd::KeyProcess(float fDeltaTime)
 {
 	Super::KeyProcess(fDeltaTime);
@@ -173,6 +182,9 @@ _uint CStage3rd::KeyProcess(float fDeltaTime)
 	return _uint();
 }
 
+// 플레이어 키 처리
+// _CurrentPlayer : 플레이어 포인터
+// fDeltaTime : 델타 타임
 void CStage3rd::PlayerKeyProcess(CPlayer* const _CurrentPlayer,  float fDeltaTime)
 {
 	Super::PlayerKeyProcess(_CurrentPlayer, fDeltaTime);
