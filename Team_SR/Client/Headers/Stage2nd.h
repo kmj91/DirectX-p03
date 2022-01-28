@@ -13,8 +13,11 @@ private:
 	explicit CStage2nd(LPDIRECT3DDEVICE9 pDevice);
 public:
 	using Super = CStage;
+	// 씬 초기화
 	virtual HRESULT ReadyScene() override;
+	// 업데이트 
 	virtual _uint UpdateScene(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateScene() override;
 protected:
 	// 키 처리

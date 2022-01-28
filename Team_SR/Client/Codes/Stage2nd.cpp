@@ -18,11 +18,15 @@ CStage2nd::CStage2nd(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {}
 
+// 씬 초기화
 HRESULT CStage2nd::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::Stage2nd;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::Stage3rd;
 	using MapType = CMap2nd;
+	// 배경 음악 이름
 	BgmKey = L"018 Medieval Epilogue - Chloradyne.wav";
 
 	Super::ReadyScene();
@@ -68,6 +72,7 @@ HRESULT CStage2nd::ReadyScene()
 		return E_FAIL;
 
 	// 맵 정보
+	// 하드 코딩...
 	BYTE byMap[44][44] = {
 	//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -116,10 +121,13 @@ HRESULT CStage2nd::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }		// 44
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 44, 44, 18, 7, 2.5f, 5);
-
+	// 몬스터 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\2\\GameObjectData.obj", vec3{ 2.5,2.5,2.5 });			
+	// 촛불 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\2\\CandleTorchData.obj", vec3{ 2.5,2.5,2.5 });
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\2\\DecoItemData.obj", vec3{ 2.5,2.5,2.5 });
 	
 
@@ -127,11 +135,14 @@ HRESULT CStage2nd::ReadyScene()
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CStage2nd::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
 }
 
+// 레이트 업데이트
 _uint CStage2nd::LateUpdateScene()
 {
 	return 	Super::LateUpdateScene();
