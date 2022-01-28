@@ -19,11 +19,15 @@ CStage1st::CStage1st(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {};
 
+// 씬 초기화
 HRESULT CStage1st::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::Stage1st;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::Stage2nd;
 	using MapType = CMap1st;
+	// 배경 음악 이름
 	BgmKey = L"001 Jerry and Luke's Final Theme.wav";
 	Super::ReadyScene();
 
@@ -69,6 +73,7 @@ HRESULT CStage1st::ReadyScene()
 		return E_FAIL;
 
 	// 맵 정보
+	// 하드 코딩임...
 	BYTE byMap[45][45] = {
 		//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -118,23 +123,29 @@ HRESULT CStage1st::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }	// 45
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 45, 45, 31, 38, 2.5f, 5);
-
+	// 몬스터 오브젝트 로드
 	LoadObjects(L"..\\Resources\\map\\1\\GameObjectData.obj", vec3{ 2.5f,2.5f,2.5f });
+	// 촛불 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\1\\CandleData.obj", vec3{ 2.5,2.5,2.5 });
 	LoadObjects(L"..\\Resources\\Map\\1\\TorchData.obj", vec3{ 2.5,2.5,2.5 });
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\1\\ItemData.obj", vec3{ 2.5,2.5,2.5 });
 	LoadObjects(L"..\\Resources\\Map\\1\\DeadData.obj", vec3{ 2.5,2.5,2.5 });
 
 	return S_OK;
 }
 
+// 업데이트 
+// fDeltaTime : 델타 타임
 _uint CStage1st::UpdateScene(float fDeltaTime)
 {
 	
 	return Super::UpdateScene(fDeltaTime); 
 }
 
+// 레이트 업데이트
 _uint CStage1st::LateUpdateScene()
 {
 	return Super::LateUpdateScene();
