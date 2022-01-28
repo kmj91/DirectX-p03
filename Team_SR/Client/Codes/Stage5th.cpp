@@ -19,11 +19,15 @@ CStage5th::CStage5th(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {};
 
+// 씬 초기화
 HRESULT CStage5th::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::Stage5th;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::Stage6th;
 	using MapType = CMap5th;
+	// 배경 음악 이름
 	BgmKey = L"006 Medieval - Oubliette.wav";
 
 	Super::ReadyScene();
@@ -68,6 +72,7 @@ HRESULT CStage5th::ReadyScene()
 		return E_FAIL;
 	
 	// 맵 정보
+	// 하드 코딩임...
 	BYTE byMap[53][53] = {
 	//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -125,19 +130,24 @@ HRESULT CStage5th::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }	// 53
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 53, 53, 4, 39, 2.5f, 5);
-	
+	// 몬스터 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\5\\GameObjectData.obj", vec3{ 2.5,2.5,2.5 });
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\5\\DecoItemData.obj", vec3{ 2.5,2.5,2.5 });
 
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CStage5th::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
 }
 
+// 레이트 업데이트
 _uint CStage5th::LateUpdateScene()
 {
 	return 	Super::LateUpdateScene();
