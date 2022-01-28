@@ -26,13 +26,13 @@ protected:
 public:
 	virtual void Free() override;
 public:
-	class CPlayer* m_pPlayer = nullptr;
-	class CMainCamera* _Camera{ nullptr };
-	class CMapBase* _CurrentMap{ nullptr };
+	class CPlayer* m_pPlayer = nullptr;			// 플레이어 포인터
+	class CMainCamera* _Camera{ nullptr };		// 카메라 포인터
+	class CMapBase* _CurrentMap{ nullptr };		// 현재 맵 포인터
 protected:
-	ESceneID CurrentSceneID;
-	ESceneID NextSceneID;
-	std::wstring BgmKey{};
+	ESceneID CurrentSceneID;	// 현재 씬 번호
+	ESceneID NextSceneID;		// 다음 씬 번호
+	std::wstring BgmKey{};		// 배경 음악 이름
 protected:
 	// 오브젝트 생성 정보 파일 로드
 	void LoadObjects(const std::wstring& FilePath, const vec3 WorldScale) & noexcept;
