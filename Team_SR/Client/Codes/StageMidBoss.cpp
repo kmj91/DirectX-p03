@@ -230,6 +230,7 @@ HRESULT CStageMidBoss::ReadyScene()
 }
 
 // 업데이트
+// fDeltaTime : 델타 타임
 _uint CStageMidBoss::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
