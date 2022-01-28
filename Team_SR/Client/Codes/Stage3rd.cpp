@@ -19,11 +19,15 @@ CStage3rd::CStage3rd(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {};
 
+// 씬 초기화
 HRESULT CStage3rd::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::Stage3rd;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::StageMidBoss;
 	using MapType = CMap3rd;
+	// 배경 음악 이름
 	BgmKey = L"004 Entering Level - Waking The Dead.wav";
 
 	Super::ReadyScene();
@@ -69,6 +73,7 @@ HRESULT CStage3rd::ReadyScene()
 		return E_FAIL;
 	
 	// 맵 정보
+	// 하드 코딩임...
 	BYTE byMap[62][34] = {
 	//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -135,19 +140,24 @@ HRESULT CStage3rd::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }		// 62
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 34, 62, 33, 21, 2.5f, 5);
-
+	// 몬스터 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\3\\GameObjectData.obj", vec3{ 2.5,2.5,2.5 });
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\3\\DecoItemData.obj", vec3{ 2.5,2.5,2.5 });
 
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CStage3rd::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
 }
 
+// 레이트 업데이트
 _uint CStage3rd::LateUpdateScene()
 {
 	return 	Super::LateUpdateScene();
