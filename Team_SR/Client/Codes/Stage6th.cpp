@@ -1,3 +1,6 @@
+// 게임 스테이지 6 씬
+// 참고 사항 : 씬 업데이트에서 키 처리를 하고 있음
+
 #include "stdafx.h"
 #include "..\Headers\Stage6th.h"
 #include "Player.h"
@@ -15,11 +18,16 @@ CStage6th::CStage6th(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {};
 
+// 씬 초기화
+// 맵의 몬스터, 아이템 정보 등을 로드하고 초기화
 HRESULT CStage6th::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::Stage6th;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::StageFinalBoss;
 	using MapType = CMap6th;
+	// 배경 음악 이름
 	BgmKey = L"007 Medieval - Sable Scabbard.wav";
 
 	Super::ReadyScene();
@@ -65,6 +73,7 @@ HRESULT CStage6th::ReadyScene()
 		return E_FAIL;
 	
 	// 맵 정보
+	// 하드 코딩임...
 	BYTE byMap[59][80] = {
 	//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -128,24 +137,35 @@ HRESULT CStage6th::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }		// 59
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 80, 59, 29, 46, 2.5f, 5);
-	
+	// 몬스터 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\6\\GameObjectData.obj", vec3{ 2.5,2.5,2.5 });
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\6\\DecoItemData.obj", vec3{ 2.5,2.5,2.5 });
 
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CStage6th::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
 }
 
+// 레이트 업데이트
 _uint CStage6th::LateUpdateScene()
 {
 	return 	Super::LateUpdateScene();
 }
 
+// 키 처리
+// 부모 CStage 에서 플레이어 관련 공용 키 처리를 함
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음...
+// 반환 값인 CHANGE_SCNENE 전혀 사용하지 않고 있음
+// 그런데도 씬 교체에 문제가 없는 상황... 운이 좋았음
 _uint CStage6th::KeyProcess(float fDeltaTime)
 {
 	Super::KeyProcess(fDeltaTime);
@@ -155,7 +175,7 @@ _uint CStage6th::KeyProcess(float fDeltaTime)
 		CManagement* pManagement = CManagement::Get_Instance();
 		if (nullptr == pManagement)
 			return 0;
-
+		// 보스전으로 씬 교체
 		if (FAILED(pManagement->SetUpCurrentScene((_int)NextSceneID,
 			CStageBoss::Create(m_pDevice))))
 		{
@@ -169,6 +189,9 @@ _uint CStage6th::KeyProcess(float fDeltaTime)
 	return _uint();
 }
 
+// 플레이어 키 처리
+// _CurrentPlayer : 플레이어 포인터
+// fDeltaTime : 델타 타임
 void CStage6th::PlayerKeyProcess(CPlayer* const _CurrentPlayer,  float fDeltaTime)
 {
 	Super::PlayerKeyProcess(_CurrentPlayer, fDeltaTime);
