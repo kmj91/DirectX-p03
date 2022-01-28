@@ -1,3 +1,6 @@
+// 게임 중간 보스 씬
+// 참고 사항 : 씬 업데이트에서 키 처리를 하고 있음
+
 #include "stdafx.h"
 #include "..\Headers\StageMidBoss.h"
 #include "Player.h"
@@ -17,11 +20,15 @@ CStageMidBoss::CStageMidBoss(LPDIRECT3DDEVICE9 pDevice)
 	: Super(pDevice)
 {};
 
+// 씬 초기화
 HRESULT CStageMidBoss::ReadyScene()
 {
+	// 현재 씬 번호
 	CurrentSceneID = ESceneID::StageMidBoss;
+	// 다음 씬 번호
 	NextSceneID = ESceneID::Stage5th;
 	using MapType = CMapMidBoss;
+	// 배경 음악 이름
 	BgmKey = L"037 Egyptian - Osiris.wav";
 
 	Super::ReadyScene();
@@ -154,6 +161,7 @@ HRESULT CStageMidBoss::ReadyScene()
 		return E_FAIL;
 	
 	// 맵 정보
+	// 하드 코딩임...
 	BYTE byMap[55][40] = {
 	//	  1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0|1 2 3 4 5 6 7 8 9 0
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },	// 1
@@ -213,18 +221,21 @@ HRESULT CStageMidBoss::ReadyScene()
 		{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }		// 55
 	};
 
+	// 점프 포인트 서치 초기화 (길찾기 알고리즘)
 	JumpPointSearch::Get_Instance()->ReadyMap(byMap[0], 40, 55, 21, 54, 2.5f, 5);
-
+	// 아이템 오브젝트 로드
 	LoadObjects(L"..\\Resources\\Map\\MidBoss\\DecoItemData.obj", vec3{ 2.5,2.5,2.5 });
 
 	return S_OK;
 }
 
+// 업데이트
 _uint CStageMidBoss::UpdateScene(float fDeltaTime)
 {
 	return Super::UpdateScene(fDeltaTime);
 }
 
+// 레이트 업데이트
 _uint CStageMidBoss::LateUpdateScene()
 {
 	// 2021.01.11 19:19 KMJ
@@ -252,6 +263,12 @@ _uint CStageMidBoss::LateUpdateScene()
 	}
 }
 
+// 키 처리
+// 부모 CStage 에서 플레이어 관련 공용 키 처리를 함
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음...
+// 반환 값인 CHANGE_SCNENE 전혀 사용하지 않고 있음
+// 그런데도 씬 교체에 문제가 없는 상황... 운이 좋았음
 _uint CStageMidBoss::KeyProcess(float fDeltaTime)
 {
 	Super::KeyProcess(fDeltaTime);
@@ -290,6 +307,9 @@ _uint CStageMidBoss::KeyProcess(float fDeltaTime)
 	return _uint();
 }
 
+// 플레이어 키 처리
+// _CurrentPlayer : 플레이어 포인터
+// fDeltaTime : 델타 타임
 void CStageMidBoss::PlayerKeyProcess(CPlayer* const _CurrentPlayer,  float fDeltaTime)
 {
 	Super::PlayerKeyProcess(_CurrentPlayer, fDeltaTime);
