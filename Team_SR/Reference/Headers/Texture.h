@@ -1,3 +1,5 @@
+// 텍스처 컴포넌트
+
 #pragma once
 #ifndef __TEXTURE_H__
 
@@ -12,7 +14,9 @@ private:
 
 public:
 	// CComponent을(를) 통해 상속됨
+	// 컴포넌트 프로토타입 초기화
 	virtual HRESULT ReadyComponentPrototype() override;
+	// 컴포넌트 복제 초기화
 	virtual HRESULT ReadyComponent(void * pArg = nullptr) override;
 
 public:
@@ -24,6 +28,7 @@ public:
 	virtual void Free() override;
 
 private:
+	// 텍스처
 	typedef vector<IDirect3DBaseTexture9*> TEXTURES;
 	TEXTURES	m_Textures;
 

@@ -1,3 +1,5 @@
+// 텍스처 컴포넌트
+
 #include "..\Headers\Texture.h"
 
 USING(Engine)
@@ -10,6 +12,7 @@ CTexture::CTexture(LPDIRECT3DDEVICE9 pDevice, ETextureType eType, TCHAR* pFilePa
 {
 }
 
+// 컴포넌트 프로토타입 초기화
 HRESULT CTexture::ReadyComponentPrototype()
 {		
 	if (FAILED(CComponent::ReadyComponentPrototype()))
@@ -43,6 +46,7 @@ HRESULT CTexture::ReadyComponentPrototype()
 	return S_OK;
 }
 
+// 컴포넌트 복제 초기화
 HRESULT CTexture::ReadyComponent(void* pArg/* = nullptr*/)
 {
 	if (FAILED(CComponent::ReadyComponent(pArg)))
