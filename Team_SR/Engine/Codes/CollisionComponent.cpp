@@ -29,6 +29,7 @@ CCollisionComponent::CCollisionComponent(LPDIRECT3DDEVICE9 pDevice)
 
 }
 
+// 컴포넌트 프로토타입 초기화
 HRESULT CCollisionComponent::ReadyComponentPrototype()
 {
 	if (FAILED( Super::ReadyComponent()) )
@@ -37,6 +38,7 @@ HRESULT CCollisionComponent::ReadyComponentPrototype()
 	return S_OK;
 }
 
+// 컴포넌트 복제 초기화
 HRESULT CCollisionComponent::ReadyComponent(void* pArg)
 {
 	if (FAILED(Super::ReadyComponent(pArg)))
@@ -115,7 +117,8 @@ void CCollisionComponent::Free()
 	Super::Free();
 };
 
-
+// 충돌 업데이트
+// _Transform : 충돌 업데이트를 호출한 객체 트랜스폼
 void CCollisionComponent::Update(class CTransform* const _Transform)&
 {
 	_Sphere.Center = _Transform->m_TransformDesc.vPosition;

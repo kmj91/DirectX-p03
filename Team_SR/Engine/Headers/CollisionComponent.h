@@ -1,3 +1,5 @@
+// 충돌 컴포넌트
+
 #pragma once
 #ifndef __COLLISIONCOMPONENT_H__
 
@@ -12,12 +14,15 @@ protected:
 	virtual ~CCollisionComponent() = default;
 public:
 	using Super = CComponent;
-	virtual HRESULT ReadyComponentPrototype() override;     
+	// 컴포넌트 프로토타입 초기화
+	virtual HRESULT ReadyComponentPrototype() override;
+	// 컴포넌트 복제 초기화
 	virtual HRESULT ReadyComponent(void* pArg = nullptr/*InitInfo 구조체로 반드시 세팅*/) override;
 public:
 	static CCollisionComponent* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
+	// 충돌 업데이트
 	void Update(class CTransform* const _Transform)&;
 	void DebugDraw();
 	void Regist();
