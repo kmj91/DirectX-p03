@@ -1,3 +1,5 @@
+// 트랜스폼 컴포넌트
+
 #include "..\Headers\Transform.h"
 
 USING(Engine)
@@ -7,12 +9,14 @@ CTransform::CTransform(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 컴포넌트 프로토타입 초기화
 HRESULT CTransform::ReadyComponentPrototype()
 {
 	return S_OK;
 }
 
+// 컴포넌트 복제 초기화
+// pArg : 인수
 HRESULT CTransform::ReadyComponent(void* pArg/* = nullptr*/)
 {
 	if (nullptr != pArg)
@@ -23,6 +27,8 @@ HRESULT CTransform::ReadyComponent(void* pArg/* = nullptr*/)
 	return S_OK;
 }
 
+// 업데이트 트랜스폼
+// 월드 행렬 갱신
 HRESULT CTransform::UpdateTransform()
 {
 	_matrix matScale, matRotX, matRotY, matRotZ, matTrans;
