@@ -1,3 +1,9 @@
+// 게임 오브젝트 인터페이스
+// 기본적으로 트랜스폼 컴포넌트를 생성합니다.
+// 참고 사항
+// 게임 오브젝트를 삭제할 때 바로 삭제하는 방식이 아님 (댕글링 포인터 문제)
+// Remove 플래그 확인하고 게임 로직 한곳에서 삭제합니다.
+
 #pragma once
 #ifndef __GAMEOBJECT_H__
 
@@ -17,8 +23,11 @@ public:
 public:
 	virtual HRESULT ReadyGameObjectPrototype() = 0;	/* 프로토타입 초기화 */
 	virtual HRESULT ReadyGameObject(void* pArg = nullptr) = 0; /* 클론 초기화 */
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) = 0;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) = 0;
+	// 렌더
 	virtual HRESULT RenderGameObject() = 0;
 	//            업데이트와 늦은 업데이트 이후 충돌 되면 호출. 
 	virtual void Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo);
