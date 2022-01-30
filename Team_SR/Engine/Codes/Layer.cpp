@@ -1,3 +1,6 @@
+// 게임 오브젝트 레이어
+// 매니저에서 게임 오브젝트를 종류별로 나누는데 사용
+
 #include "..\Headers\Layer.h"
 #include "GameObject.h"
 
@@ -25,6 +28,10 @@ typename CLayer::GAMEOBJECTS  CLayer::GetGameObjects()
 	return 	m_GameObjects;
 }
 
+// 레이어에 오브젝트 추가
+// 프로토타입을 복제한 오브젝트를 레이어에 저장
+// pGameObject : 복제한 게임 오브젝트 포인터
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CLayer::AddGameObjectInLayer(CGameObject * pGameObject)
 {
 	if (nullptr == pGameObject)
@@ -42,6 +49,9 @@ HRESULT CLayer::AddGameObjectInLayer(CGameObject * pGameObject)
 	return S_OK;
 }
 
+// 오브젝트들 업데이트
+// 레이어에 있는 오브젝트들 업데이트
+// fDeltaTime : 델타 타임
 _uint CLayer::UpdateGameObject(float fDeltaTime)
 {
 	for (auto& pGameObject : m_GameObjects)
@@ -52,6 +62,9 @@ _uint CLayer::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 오브젝트들 레이트 업데이트
+// 레이어에 있는 오브젝트들 레이트 업데이트
+// fDeltaTime : 델타 타임
 _uint CLayer::LateUpdateGameObject(float fDeltaTime)
 {
 	for (auto& pGameObject : m_GameObjects)
