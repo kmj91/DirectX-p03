@@ -1,3 +1,5 @@
+// 사각형 텍스처
+
 #include "VIBuffer_RectTexture.h"
 
 USING(Engine)
@@ -6,19 +8,24 @@ CVIBuffer_RectTexture::CVIBuffer_RectTexture(LPDIRECT3DDEVICE9 pDevice)
 	: CVIBuffer(pDevice)
 {
 }
+
+// 컴포넌트 초기화
 HRESULT CVIBuffer_RectTexture::ReadyComponentPrototype()
 {
+	// 버텍스 정보 초기화
 	m_iVertexSize = sizeof(VTX_TEXTURE);
 	m_iVertexCount = 4;
 	m_iFVF = FVF_VTX_TEXTURE;
 	m_iTriCount = 2;
-
+	// 인덱스 정보 초기화
 	m_iIndexSize = sizeof(INDEX16);
 	m_IndexFormat = D3DFMT_INDEX16;
 
+	// 버텍스, 인덱스 버퍼 생성
 	if (FAILED(CVIBuffer::ReadyComponentPrototype()))
 		return E_FAIL;
 
+	// 버텍스 버퍼 초기화
 	VTX_TEXTURE* pVertex = nullptr;
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
@@ -37,6 +44,7 @@ HRESULT CVIBuffer_RectTexture::ReadyComponentPrototype()
 
 	m_pVB->Unlock();
 
+	// 인덱스 버퍼 초기화
 	INDEX16* pIndex = nullptr;
 
 	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
@@ -54,6 +62,7 @@ HRESULT CVIBuffer_RectTexture::ReadyComponentPrototype()
 	return S_OK;
 }
 
+// 컴포넌트 클론 초기화
 HRESULT CVIBuffer_RectTexture::ReadyComponent(void * pArg)
 {
 	if (FAILED(CVIBuffer::ReadyComponent(pArg)))
@@ -62,6 +71,7 @@ HRESULT CVIBuffer_RectTexture::ReadyComponent(void * pArg)
 	return S_OK;
 }
 
+// 렌더
 HRESULT CVIBuffer_RectTexture::Render_VIBuffer()
 {
 	if (FAILED(CVIBuffer::Render_VIBuffer()))
@@ -75,6 +85,7 @@ HRESULT CVIBuffer_RectTexture::Render_VIBuffer()
 	return m_pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iVertexCount, 0, m_iTriCount);
 }
 
+// 프로토타입 생성
 CVIBuffer_RectTexture* CVIBuffer_RectTexture::Create(LPDIRECT3DDEVICE9 pDevice)
 {
 	CVIBuffer_RectTexture* pInstance = new CVIBuffer_RectTexture(pDevice);
@@ -87,6 +98,7 @@ CVIBuffer_RectTexture* CVIBuffer_RectTexture::Create(LPDIRECT3DDEVICE9 pDevice)
 	return pInstance;
 }
 
+// 프로토타입 복제
 CComponent * CVIBuffer_RectTexture::Clone(void * pArg)
 {
 	CVIBuffer_RectTexture* pClone = new CVIBuffer_RectTexture(*this);
