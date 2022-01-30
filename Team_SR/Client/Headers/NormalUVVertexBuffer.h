@@ -1,3 +1,5 @@
+// 버텍스 버퍼
+
 #pragma once
 
 #ifndef NormalUVVertexBuffer_h__
@@ -14,13 +16,17 @@ public:
 	explicit CNormalUVVertexBuffer(LPDIRECT3DDEVICE9 pDevice);
 public:
 	using Super = CComponent;
+	// 컴포넌트 프로토타입 초기화
 	virtual HRESULT ReadyComponentPrototype() override;
+	// 컴포넌트 복제 초기화
 	virtual HRESULT ReadyComponent(void* pArg = nullptr) override;
+	// 렌더
 	virtual HRESULT Render();
 public:
 	static CNormalUVVertexBuffer* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CComponent* Clone(void* pArg = nullptr)override;
 	virtual void Free() override;
+	// 버텍스 버퍼
 	std::shared_ptr<IDirect3DVertexBuffer9> _VertexBuf{ nullptr };
 private:
 	uint32_t VertexCount = 6ul;

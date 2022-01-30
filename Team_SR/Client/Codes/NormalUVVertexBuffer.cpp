@@ -1,3 +1,5 @@
+// 버텍스 버퍼
+
 #include "stdafx.h"
 #include "..\Headers\NormalUVVertexBuffer.h"
 #include "..\Headers\VIBuffer.h"
@@ -9,6 +11,7 @@ CNormalUVVertexBuffer::CNormalUVVertexBuffer(LPDIRECT3DDEVICE9 pDevice) :
 {
 }
 
+// 컴포넌트 프로토타입 초기화
 HRESULT CNormalUVVertexBuffer::ReadyComponentPrototype()
 {
 	std::vector<Vertex::Texture> _Vertexs(6);
@@ -131,11 +134,13 @@ HRESULT CNormalUVVertexBuffer::ReadyComponentPrototype()
 	return S_OK;
 };
 
+// 컴포넌트 복제 초기화
 HRESULT CNormalUVVertexBuffer::ReadyComponent(void* pArg)
 {
 	return S_OK;
 };
 
+// 렌더
 HRESULT CNormalUVVertexBuffer::Render()
 {
 	m_pDevice->SetStreamSource(0, _VertexBuf.get(), 0, VertexByteSize);
