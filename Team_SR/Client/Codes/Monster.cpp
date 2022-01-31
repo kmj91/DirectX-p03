@@ -1,3 +1,7 @@
+// 몬스터 인터페이스
+// 몬스터 오브젝트의 부모 클래스
+// 기본적인 몬스터 스텟 정보나 상태 플래그를 멤버 변수로 가지고 있음
+
 #include "stdafx.h"
 #include "..\Headers\Monster.h"
 #include "Camera.h"
@@ -313,7 +317,9 @@ void CMonster::MeleeAttack()
 	CMonster::Attack(_Ray, m_stStatus.fMeleeRange * 0.5);
 }
 
-// 텍스처 프레임 이동 - 프레임 카운트가 End에 도달하면 true, 아니면 false
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 카운트가 End에 도달하면 true, 아니면 false
 bool CMonster::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -331,7 +337,8 @@ bool CMonster::Frame_Move(float fDeltaTime)
 	return false;
 }
 
-// 플레이어 인식 - 인식하면 true, 인식하지 못하면 false
+// 플레이어 인식
+// 반환 값 : 인식하면 true, 인식하지 못하면 false
 bool CMonster::PlayerAwareness()
 {
 	vec3 vDir = m_pPlayer->GetTransform()->m_TransformDesc.vPosition - m_pTransformCom->m_TransformDesc.vPosition;
@@ -347,7 +354,8 @@ bool CMonster::PlayerAwareness()
 	return false;
 }
 
-// 플레이어가 가까이 근접해있는가 - 가까우면 true, 아니면 false
+// 플레이어가 가까이 근접해있는가
+// 반환 값 : 가까우면 true, 아니면 false
 bool CMonster::PlayerBeNear()
 {
 	vec3 vDir = m_pPlayer->GetTransform()->m_TransformDesc.vPosition - m_pTransformCom->m_TransformDesc.vPosition;
