@@ -1,3 +1,7 @@
+// 카메라 인터페이스
+// 게임에 사용할 View 카메라
+// Fov, Near, Far에 대한 정보를 가지고 있습니다
+
 #pragma once
 #ifndef __CAMERA_H__
 
