@@ -1,3 +1,7 @@
+// 몬스터 회색 박쥐
+// 원거리 공격 근접 공격을 합니다.
+// 체력이 없으면 도망을 가기도 합니다.
+
 #include "stdafx.h"
 #include "..\Headers\BatGrey.h"
 
@@ -10,7 +14,7 @@ CBatGrey::CBatGrey(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
 HRESULT CBatGrey::ReadyGameObjectPrototype()
 {
 	if (FAILED(CMonster::ReadyGameObjectPrototype()))
@@ -21,6 +25,7 @@ HRESULT CBatGrey::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
 HRESULT CBatGrey::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CMonster::ReadyGameObject(pArg)))
@@ -29,6 +34,7 @@ HRESULT CBatGrey::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 3.5f,3.5f,3.5f };
 
 	// 몬스터 원본 스텟
@@ -59,6 +65,8 @@ HRESULT CBatGrey::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CBatGrey::UpdateGameObject(float fDeltaTime)
 {
 	CMonster::UpdateGameObject(fDeltaTime);
@@ -73,13 +81,16 @@ _uint CBatGrey::UpdateGameObject(float fDeltaTime)
 	}
 	if (LightHitTime > 0.0f)return 0;
 
-	Update_AI(fDeltaTime);	// 업데이트 AI
-
+	// 업데이트 AI
+	Update_AI(fDeltaTime);
+	// 충돌 처리
 	_CollisionComp->Update(m_pTransformCom);
 
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
 _uint CBatGrey::LateUpdateGameObject(float fDeltaTime)
 {
 	CMonster::LateUpdateGameObject(fDeltaTime);
@@ -92,6 +103,7 @@ _uint CBatGrey::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
 HRESULT CBatGrey::RenderGameObject()
 {
 	if (FAILED(CMonster::RenderGameObject()))
@@ -100,9 +112,11 @@ HRESULT CBatGrey::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
 HRESULT CBatGrey::AddComponents()
 {
-	if (FAILED(CMonster::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// Monster.cpp에서 CNormalUVVertexBuffer 생성
+	if (FAILED(CMonster::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture
@@ -182,6 +196,8 @@ HRESULT CBatGrey::AddComponents()
 }
 
 // 몬스터가 피해를 받음
+// _Target : 공격자
+// _CollisionInfo : 충돌 정보
 void CBatGrey::Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -241,6 +257,9 @@ void CBatGrey::Hit(CGameObject * const _Target, const Collision::Info & _Collisi
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
 }
 
+// 몬스터가 피해를 받음
+// _Particle : 공격 파티클
+// _CollisionInfo : 충돌 정보
 void CBatGrey::ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -301,6 +320,7 @@ void CBatGrey::ParticleHit(void* const _Particle, const Collision::Info& _Collis
 }
 
 // AI는 하나의 행동을 끝마친 후에 새로운 행동을 받는다
+// fDeltaTime : 델타 타임
 void CBatGrey::Update_AI(float fDeltaTime)
 {
 	// 다음 공격 대기 시간 감소
@@ -531,6 +551,8 @@ RETURN_SHOOT:	// 원거리 공격
 }
 
 // 행동 대기
+// fDeltaTime : 델타 타임
+// 반환 값 : 지정 시간까지 대기 했으면 true, 아니면 false
 bool CBatGrey::Action_Idle(float fDeltaTime)
 {
 	// 지정된 시간만큼 행동 대기
@@ -542,6 +564,8 @@ bool CBatGrey::Action_Idle(float fDeltaTime)
 }
 
 // 이동
+// fDeltaTime : 델타 타임
+// 반환 값 : 이동 완료 했으면 true, 아직 이동할 좌표가 더 있다면 false
 bool CBatGrey::Action_Move(float fDeltaTime)
 {
 	// 더 이상 이동할 좌표가 없으면 이동을 끝냄
@@ -584,6 +608,8 @@ bool CBatGrey::Action_Move(float fDeltaTime)
 }
 
 // 원거리 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CBatGrey::Action_Shoot(float fDeltaTime)
 {
 	// 단발 쏴
@@ -611,6 +637,8 @@ bool CBatGrey::Action_Shoot(float fDeltaTime)
 }
 
 // 근접 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CBatGrey::Action_Melee(float fDeltaTime)
 {
 	CSoundMgr::Get_Instance()->StopSound(CSoundMgr::BATGRAY);
@@ -626,6 +654,8 @@ bool CBatGrey::Action_Melee(float fDeltaTime)
 }
 
 // 공격받아서 경직
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CBatGrey::Action_Hit(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -636,6 +666,8 @@ bool CBatGrey::Action_Hit(float fDeltaTime)
 }
 
 // 죽음
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CBatGrey::Action_Dead(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {

@@ -1,3 +1,7 @@
+// 몬스터 회색 박쥐
+// 원거리 공격 근접 공격을 합니다.
+// 체력이 없으면 도망을 가기도 합니다.
+
 #pragma once
 #ifndef __BATGREY_H__
 
@@ -10,12 +14,18 @@ private:
 	virtual ~CBatGrey() = default;
 public:
 	// CMonster을(를) 통해 상속됨
+	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
+	// 복제 초기화
 	virtual HRESULT ReadyGameObject(void * pArg = nullptr) override;
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) override;
+	// 렌더
 	virtual HRESULT RenderGameObject() override;
 private:
+	// 컴포넌트 추가
 	virtual HRESULT AddComponents() override;
 public:
 	virtual void Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo) override;	// 몬스터가 피해를 받음
