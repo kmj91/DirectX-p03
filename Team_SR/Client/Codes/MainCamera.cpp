@@ -1,3 +1,7 @@
+// 메인 카메라
+// 레이트 업데이트에서 플레이어의 위치 값을 받아
+// 카메라 m_CameraDesc 구조체를 초기화 함
+
 #include "stdafx.h"
 #include "MainCamera.h"
 #include "MyMath.h"
