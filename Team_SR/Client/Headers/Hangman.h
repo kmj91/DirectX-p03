@@ -1,14 +1,9 @@
 // 몬스터 행맨
 // 근접 공격을 합니다.
-// 일정 체력을 잃어버리면 모습이 바뀌고 이동 속도가 빨라짐
+// 일정 체력을 잃어버리면 모습이 바뀌고 이동 속도가 빨라집니다.
 
 #pragma once
 #ifndef __HANGMAN_H__
-
-/*
-근접 공격과 원거리 폭탄 던지기 공격을함
-큰 피해를 받아 손상되면 이동속도가 약간 빨라지고 근접 공격만 함
-*/
 
 #include "Monster.h"
 USING(Engine)
@@ -37,6 +32,7 @@ private:
 public:
 	virtual void Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo) override;	// 몬스터가 피해를 받음
 	virtual void ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)override;
+	virtual void FreezeHit() override;
 
 private:
 	void Update_AI(float fDeltaTime);		// 업데이트 AI
@@ -74,8 +70,6 @@ private:
 	PHASE m_ePhase;				// 페이즈
 	AIFunc m_fpMonsterAI[(int)AWARENESS::End][(int)PHASE::End];	// AI 함수 배열
 	bool m_isDamaged;			// 텍스처 손상 전환용
-	// CMonster을(를) 통해 상속됨
-	virtual void FreezeHit() override;
 };
 
 #define __HANGMAN_H__

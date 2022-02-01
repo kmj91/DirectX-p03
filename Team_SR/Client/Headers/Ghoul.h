@@ -1,11 +1,10 @@
+// 몬스터 구울
+// 땅속에 숨어있다가 플레이어가 접근하면 땅을 파고 나옴
+// 행동이 느림
+// 땅속에 숨어있을 때는 데미지를 받으면 안됨
+
 #pragma once
 #ifndef __GHOUL_H__
-
-/*
-땅속에 숨어있다가 플레이어가 접근하면 땅을 파고 나옴
-행동이 느림
-땅속에 숨어있을 때는 데미지를 받으면 안됨
-*/
 
 #include "Monster.h"
 USING(Engine)
@@ -16,13 +15,19 @@ private:
 	virtual ~CGhoul() = default;
 public:
 	// CMonster을(를) 통해 상속됨
+	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
+	// 복제 초기화
 	virtual HRESULT ReadyGameObject(void * pArg = nullptr) override;
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) override;
+	// 렌더
 	virtual HRESULT RenderGameObject() override;
 
 private:
+	// 컴포넌트 추가
 	virtual HRESULT AddComponents() override;
 	
 public:
