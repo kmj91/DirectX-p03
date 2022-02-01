@@ -6,7 +6,7 @@ CGhoul::CGhoul(LPDIRECT3DDEVICE9 pDevice)
 	:CMonster(pDevice)
 	, m_fCountdown(0.f), m_fNextAtkWait(0.f), m_fPlayerTrackCount(0.f), m_fpAction(nullptr)
 	, m_eAwareness(AWARENESS::End)
-	, m_fpMonsterAI{}, isHide(true)
+	, m_fpMonsterAI{}, m_isHide(true)
 {
 }
 
@@ -300,7 +300,7 @@ void CGhoul::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _Colli
 	if (_CollisionInfo.Flag == L"Floor")
 	{
 		// 숨어있으면
-		if (isHide) {
+		if (m_isHide) {
 			bGravity = false;						// 중력 OFF
 			_CollisionComp->bCollision = false;		// 충돌 OFF
 		}
@@ -529,7 +529,7 @@ void CGhoul::Update_AI(float fDeltaTime)
 void CGhoul::AI_NoAwareness()
 {
 	// 숨어있음
-	if (isHide) {
+	if (m_isHide) {
 		// 숨음
 		goto RETURN_HIDE;
 	}
@@ -561,7 +561,7 @@ RETURN_IDLE:	// 대기
 void CGhoul::AI_NormalPattern()
 {
 	// 숨어있음
-	if (isHide) {
+	if (m_isHide) {
 		// 플레이어가 가까이 근접해 있나
 		if (PlayerBeNear()) {
 			// 땅파고 나옴
@@ -674,7 +674,7 @@ RETURN_DIG_OUT:	// 땅파고 나옴
 	m_fFrameCnt = 0;
 	m_fStartFrame = 0;
 	m_fEndFrame = 16;
-	isHide = false;	// 숨은 상태 아님
+	m_isHide = false;	// 숨은 상태 아님
 	m_stOriginStatus.fMeleeRange = 2.5f;		// 근접 공격 사거리
 	m_stOriginStatus.fDetectionRange = 20.f;	// 탐지 사거리
 	m_stStatus = m_stOriginStatus;	// 몬스터 스텟 변경

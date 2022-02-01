@@ -67,7 +67,7 @@ private:
 	ACTFunc m_fpAction;			// 현재 몬스터 행동 함수 - 행동 완료시 true, 진행시 false
 	AWARENESS m_eAwareness;		// 인식
 	AIFunc m_fpMonsterAI[(int)AWARENESS::End];	// AI 함수 배열
-	bool isHide;				// 몬스터가 땅속에 숨어있는지 확인용
+	bool m_isHide;				// 몬스터가 땅속에 숨어있는지 확인용
 };
 
 #define __HELLHOUND_H__
