@@ -1,3 +1,7 @@
+// 몬스터 행맨
+// 근접 공격을 합니다.
+// 일정 체력을 잃어버리면 모습이 바뀌고 이동 속도가 빨라짐
+
 #pragma once
 #ifndef __HANGMAN_H__
 
@@ -15,13 +19,19 @@ private:
 	virtual ~CHangman() = default;
 public:
 	// CMonster을(를) 통해 상속됨
+	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
+	// 복제 초기화
 	virtual HRESULT ReadyGameObject(void * pArg = nullptr) override;
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) override;
+	// 렌더
 	virtual HRESULT RenderGameObject() override;
 
 private:
+	// 컴포넌트 추가
 	virtual HRESULT AddComponents() override;
 	
 public:

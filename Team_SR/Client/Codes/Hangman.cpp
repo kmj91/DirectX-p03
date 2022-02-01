@@ -1,3 +1,7 @@
+// 몬스터 행맨
+// 근접 공격을 합니다.
+// 일정 체력을 잃어버리면 모습이 바뀌고 이동 속도가 빨라짐
+
 #include "stdafx.h"
 #include "..\Headers\Hangman.h"
 
@@ -10,7 +14,7 @@ CHangman::CHangman(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
 HRESULT CHangman::ReadyGameObjectPrototype()
 {
 	if (FAILED(CMonster::ReadyGameObjectPrototype()))
@@ -22,6 +26,7 @@ HRESULT CHangman::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
 HRESULT CHangman::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CMonster::ReadyGameObject(pArg)))
@@ -61,6 +66,8 @@ HRESULT CHangman::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CHangman::UpdateGameObject(float fDeltaTime)
 {
 	CMonster::UpdateGameObject(fDeltaTime);
@@ -74,13 +81,17 @@ _uint CHangman::UpdateGameObject(float fDeltaTime)
 		return 0;
 	}
 	if (LightHitTime > 0.0f)return 0;
-	Update_AI(fDeltaTime);	// 업데이트 AI
 
+	// 업데이트 AI
+	Update_AI(fDeltaTime);
+	// 충돌 처리
 	_CollisionComp->Update(m_pTransformCom);
 
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
 _uint CHangman::LateUpdateGameObject(float fDeltaTime)
 {
 	CMonster::LateUpdateGameObject(fDeltaTime);
@@ -93,6 +104,7 @@ _uint CHangman::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
 HRESULT CHangman::RenderGameObject()
 {
 	if (FAILED(CMonster::RenderGameObject()))
@@ -101,9 +113,11 @@ HRESULT CHangman::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
 HRESULT CHangman::AddComponents()
 {
-	if (FAILED(CMonster::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// Monster.cpp에서 CNormalUVVertexBuffer 생성
+	if (FAILED(CMonster::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture
@@ -220,6 +234,8 @@ HRESULT CHangman::AddComponents()
 }
 
 // 몬스터가 피해를 받음
+// _Target : 공격자
+// _CollisionInfo : 충돌 정보
 void CHangman::Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -296,6 +312,9 @@ void CHangman::Hit(CGameObject * const _Target, const Collision::Info & _Collisi
 	}
 }
 
+// 몬스터가 피해를 받음
+// _Particle : 공격 파티클
+// _CollisionInfo : 충돌 정보
 void CHangman::ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -537,6 +556,8 @@ RETURN_MOVE:	// 이동
 }
 
 // 행동 대기
+// fDeltaTime : 델타 타임
+// 반환 값 : 지정 시간까지 대기 했으면 true, 아니면 false
 bool CHangman::Action_Idle(float fDeltaTime)
 {
 	// 지정된 시간만큼 행동 대기
@@ -548,6 +569,8 @@ bool CHangman::Action_Idle(float fDeltaTime)
 }
 
 // 이동
+// fDeltaTime : 델타 타임
+// 반환 값 : 이동 완료 했으면 true, 아직 이동할 좌표가 더 있다면 false
 bool CHangman::Action_Move(float fDeltaTime)
 {
 	// 더 이상 이동할 좌표가 없으면 이동을 끝냄
@@ -590,6 +613,8 @@ bool CHangman::Action_Move(float fDeltaTime)
 }
 
 // 원거리 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHangman::Action_Shoot(float fDeltaTime)
 {
 	// 단발 쏴
@@ -630,6 +655,8 @@ bool CHangman::Action_Melee(float fDeltaTime)
 }
 
 // 공격받아서 경직
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHangman::Action_Hit(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -640,6 +667,8 @@ bool CHangman::Action_Hit(float fDeltaTime)
 }
 
 // 죽음
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHangman::Action_Dead(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -653,6 +682,9 @@ bool CHangman::Action_Dead(float fDeltaTime)
 	return false;
 }
 
+// 손상
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHangman::Action_Damage(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
