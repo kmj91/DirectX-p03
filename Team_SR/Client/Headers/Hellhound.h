@@ -1,10 +1,9 @@
+// 몬스터 헬 하운드
+// 알에서 부화해서 플레이어를 향해 빠르게 달려옴
+// 큰 피해를 받아 손상되면 느려짐
+
 #pragma once
 #ifndef __HELLHOUND_H__
-
-/*
-알에서 부화해서 플레이어를 향해 겁나 빠르게 달려옴
-큰 피해를 받아 손상되면 느려짐
-*/
 
 #include "Monster.h"
 USING(Engine)
@@ -15,20 +14,27 @@ private:
 	virtual ~CHellhound() = default;
 public:
 	// CMonster을(를) 통해 상속됨
+	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
+	// 복제 초기화
 	virtual HRESULT ReadyGameObject(void * pArg = nullptr) override;
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) override;
+	// 렌더
 	virtual HRESULT RenderGameObject() override;
 
 private:
+	// 컴포넌트 추가
 	virtual HRESULT AddComponents() override;
 	
 public:
 	virtual void Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo) override;	// 몬스터가 피해를 받음
 	virtual void ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)override;
-
 	virtual void MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo) override;
+	virtual void FreezeHit() override;
+
 private:
 	void Update_AI(float fDeltaTime);		// 업데이트 AI
 
@@ -64,10 +70,7 @@ private:
 	AWARENESS m_eAwareness;			// 인식
 	PHASE m_ePhase;					// 페이즈
 	AIFunc m_fpMonsterAI[(int)AWARENESS::End][(int)PHASE::End];	// AI 함수 배열
-	bool isDamaged;
-	// CMonster을(를) 통해 상속됨
-	virtual void FreezeHit() override;
-	// 텍스처 손상 전환용
+	bool isDamaged;					// 텍스처 손상 전환용
 };
 
 #define __HELLHOUND_H__
