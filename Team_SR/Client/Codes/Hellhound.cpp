@@ -716,6 +716,7 @@ void CHellhound::Free()
 	CMonster::Free();
 }
 
+// 플레이어 마법 공격에 맞음
 void CHellhound::FreezeHit()
 {
 	// 피해를 받지 않는 상태임

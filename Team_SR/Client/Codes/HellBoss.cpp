@@ -10,7 +10,7 @@ CHellBoss::CHellBoss(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
 HRESULT CHellBoss::ReadyGameObjectPrototype()
 {
 	if (FAILED(CMonster::ReadyGameObjectPrototype()))
@@ -19,6 +19,7 @@ HRESULT CHellBoss::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
 HRESULT CHellBoss::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CMonster::ReadyGameObject(pArg)))
@@ -27,6 +28,7 @@ HRESULT CHellBoss::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 12.f,12.f,12.f };
 
 	// 몬스터 원본 스텟
@@ -60,6 +62,7 @@ HRESULT CHellBoss::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
 _uint CHellBoss::UpdateGameObject(float fDeltaTime)
 {
 	CMonster::UpdateGameObject(fDeltaTime);
@@ -76,6 +79,7 @@ _uint CHellBoss::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
 _uint CHellBoss::LateUpdateGameObject(float fDeltaTime)
 {
 	CMonster::LateUpdateGameObject(fDeltaTime);
@@ -88,6 +92,7 @@ _uint CHellBoss::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
 HRESULT CHellBoss::RenderGameObject()
 {
 	if (FAILED(CMonster::RenderGameObject()))
@@ -98,6 +103,7 @@ HRESULT CHellBoss::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
 HRESULT CHellBoss::AddComponents()
 {
 	if (FAILED(CMonster::AddComponents()))	// Monster.cpp에서 RectTexture 호출
@@ -328,6 +334,9 @@ HRESULT CHellBoss::AddComponents()
 }
 
 // 몬스터가 피해를 받음
+// 체력이 0이되면 체력을 회복하고 다음 페이즈로 넘어감
+// _Target : 공격자
+// _CollisionInfo : 충돌 정보
 void CHellBoss::Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -450,6 +459,9 @@ void CHellBoss::Hit(CGameObject * const _Target, const Collision::Info & _Collis
 	m_fCrossValue = _CollisionInfo.CrossValue;
 }
 
+// 몬스터가 피해를 받음
+// _Particle : 공격 파티클
+// _CollisionInfo : 충돌 정보
 void CHellBoss::ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -572,6 +584,7 @@ void CHellBoss::ParticleHit(void* const _Particle, const Collision::Info& _Colli
 }
 
 // AI는 하나의 행동을 끝마친 후에 새로운 행동을 받는다
+// fDeltaTime : 델타 타임
 void CHellBoss::Update_AI(float fDeltaTime)
 {
 	// 다음 공격 대기 시간 감소
@@ -892,6 +905,8 @@ RETURN_MONSTERSPAWN:	// 몬스터 소환
 }
 
 // 행동 대기
+// fDeltaTime : 델타 타임
+// 반환 값 : 지정 시간까지 대기 했으면 true, 아니면 false
 bool CHellBoss::Action_Idle(float fDeltaTime)
 {
 	// 지정된 시간만큼 행동 대기
@@ -903,6 +918,8 @@ bool CHellBoss::Action_Idle(float fDeltaTime)
 }
 
 // 이동
+// fDeltaTime : 델타 타임
+// 반환 값 : 이동 완료 했으면 true, 아직 이동할 좌표가 더 있다면 false
 bool CHellBoss::Action_Move(float fDeltaTime)
 {
 	// 더 이상 이동할 좌표가 없으면 이동을 끝냄
@@ -945,6 +962,8 @@ bool CHellBoss::Action_Move(float fDeltaTime)
 }
 
 // 페이즈 전환 변신
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_Morph(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -957,6 +976,8 @@ bool CHellBoss::Action_Morph(float fDeltaTime)
 }
 
 // 최종 페이즈 변신
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_LastMorph(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -975,6 +996,8 @@ bool CHellBoss::Action_LastMorph(float fDeltaTime)
 }
 
 // 리틀 데몬 눈깔 빔
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_LittleDemon_EyeBlast(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 6.f) {
@@ -1012,6 +1035,8 @@ bool CHellBoss::Action_LittleDemon_EyeBlast(float fDeltaTime)
 }
 
 // 리틀 데몬 원거리 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_LittleDemon_Shoot(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 6.f) {
@@ -1064,6 +1089,8 @@ bool CHellBoss::Action_LittleDemon_Shoot(float fDeltaTime)
 }
 
 // 터보 사탄 원거리 공격 시작
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_TurboSatan_ShootStart(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -1078,6 +1105,8 @@ bool CHellBoss::Action_TurboSatan_ShootStart(float fDeltaTime)
 }
 
 // 터보 사탄 원거리 공격 회전
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_TurboSatan_ShootSpin(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -1097,6 +1126,8 @@ bool CHellBoss::Action_TurboSatan_ShootSpin(float fDeltaTime)
 }
 
 // 터보 사탄 원거리 공격 발싸
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_TurboSatan_ShootFire(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 0.f) {
@@ -1163,6 +1194,8 @@ bool CHellBoss::Action_TurboSatan_ShootFire(float fDeltaTime)
 }
 
 // 터보 사탄 원거리 공격 끝
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_TurboSatan_ShootEnd(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -1175,6 +1208,8 @@ bool CHellBoss::Action_TurboSatan_ShootEnd(float fDeltaTime)
 }
 
 // 부상당한 리틀 데몬 원거리 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_InjuredTurboSatan_Shoot(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 5.f) {
@@ -1228,6 +1263,8 @@ bool CHellBoss::Action_InjuredTurboSatan_Shoot(float fDeltaTime)
 }
 
 // 카코 데빌 눈깔 레이저
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_CacoDevil_EyeLasers(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 5.f) {
@@ -1305,6 +1342,8 @@ bool CHellBoss::Action_CacoDevil_EyeLasers(float fDeltaTime)
 }
 
 // 카코 데빌 근접 충격파
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_CacoDevil_Nova(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -1317,6 +1356,8 @@ bool CHellBoss::Action_CacoDevil_Nova(float fDeltaTime)
 }
 
 // 카코 데빌 몬스터 소환
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_CacoDevil_MonsterSpawn(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot)) && m_fFrameCnt >= 0.f) {
@@ -1360,6 +1401,9 @@ bool CHellBoss::Action_CacoDevil_MonsterSpawn(float fDeltaTime)
 	return false;
 }
 
+// 몰락한 군주 촉수 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_FallenLord_TentacleAttack(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot))) {
@@ -1394,6 +1438,9 @@ bool CHellBoss::Action_FallenLord_TentacleAttack(float fDeltaTime)
 	return false;
 }
 
+// 몰락한 군주 몬스터 소환
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_FallenLord_MonsterSpawn(float fDeltaTime)
 {
 	if (!(m_byMonsterFlag & static_cast<BYTE>(MonsterFlag::Shoot))) {
@@ -1427,6 +1474,8 @@ bool CHellBoss::Action_FallenLord_MonsterSpawn(float fDeltaTime)
 }
 
 // 죽음
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CHellBoss::Action_Dead(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -1473,6 +1522,7 @@ void CHellBoss::Free()
 	CMonster::Free();
 }
 
+// 플레이어 마법 공격에 맞음
 void CHellBoss::FreezeHit()
 {
 	// 피해를 받지 않는 상태임

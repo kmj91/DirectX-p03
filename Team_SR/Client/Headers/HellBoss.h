@@ -1,3 +1,7 @@
+// 보스 몬스터 헬 보스
+// 여러 페이즈로 구성됨
+// 페이즈가 바뀌면 체력 회복을 하고 모습과 패턴이 바뀜
+
 #pragma once
 #ifndef __HELLBOSS_H__
 
@@ -45,18 +49,25 @@ private:
 	virtual ~CHellBoss() = default;
 public:
 	// CMonster을(를) 통해 상속됨
+	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
+	// 복제 초기화
 	virtual HRESULT ReadyGameObject(void * pArg = nullptr) override;
+	// 업데이트
 	virtual _uint UpdateGameObject(float fDeltaTime) override;
+	// 레이트 업데이트
 	virtual _uint LateUpdateGameObject(float fDeltaTime) override;
+	// 렌더
 	virtual HRESULT RenderGameObject() override;
 
 private:
+	// 컴포넌트 추가
 	virtual HRESULT AddComponents() override;
 	
 public:
 	virtual void Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo) override;	// 몬스터가 피해를 받음
 	virtual void ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo);
+	virtual void FreezeHit() override;
 
 private:
 	void Update_AI(float fDeltaTime);		// 업데이트 AI
@@ -103,10 +114,7 @@ private:
 	int m_iRepeatCount;			// 반복 횟수
 	ACTFunc m_fpAction;			// 현재 몬스터 행동 함수 - 행동 완료시 true, 진행시 false
 	PHASE m_ePhase;				// 페이즈
-	AIFunc m_fpMonsterAI[(int)PHASE::End];
-	// CMonster을(를) 통해 상속됨
-	virtual void FreezeHit() override;
-	// AI 함수 배열
+	AIFunc m_fpMonsterAI[(int)PHASE::End];	// AI 함수 배열
 };
 
 #define __HELLHOUND_H__
