@@ -10,7 +10,7 @@ CGhoul::CGhoul(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
 HRESULT CGhoul::ReadyGameObjectPrototype()
 {
 	if (FAILED(CMonster::ReadyGameObjectPrototype()))
@@ -19,6 +19,7 @@ HRESULT CGhoul::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
 HRESULT CGhoul::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CMonster::ReadyGameObject(pArg)))
@@ -27,6 +28,7 @@ HRESULT CGhoul::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 3.5f,3.5f,3.5f };
 
 	// 몬스터 원본 스텟
@@ -57,6 +59,8 @@ HRESULT CGhoul::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CGhoul::UpdateGameObject(float fDeltaTime)
 {
 	CMonster::UpdateGameObject(fDeltaTime);
@@ -66,13 +70,17 @@ _uint CGhoul::UpdateGameObject(float fDeltaTime)
 		return 0;
 	}
 	if (LightHitTime > 0.0f)return 0;
-	Update_AI(fDeltaTime);	// 업데이트 AI
 
+	// 업데이트 AI
+	Update_AI(fDeltaTime);
+	// 충돌 처리
 	_CollisionComp->Update(m_pTransformCom);
 
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
 _uint CGhoul::LateUpdateGameObject(float fDeltaTime)
 {
 	CMonster::LateUpdateGameObject(fDeltaTime);
@@ -85,6 +93,7 @@ _uint CGhoul::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
 HRESULT CGhoul::RenderGameObject()
 {
 	if (FAILED(CMonster::RenderGameObject()))
@@ -95,9 +104,11 @@ HRESULT CGhoul::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
 HRESULT CGhoul::AddComponents()
 {
-	if (FAILED(CMonster::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// Monster.cpp에서 CNormalUVVertexBuffer 생성
+	if (FAILED(CMonster::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture
@@ -187,6 +198,8 @@ HRESULT CGhoul::AddComponents()
 }
 
 // 몬스터가 피해를 받음
+// _Target : 공격자
+// _CollisionInfo : 충돌 정보
 void CGhoul::Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -277,6 +290,11 @@ void CGhoul::Hit(CGameObject * const _Target, const Collision::Info & _Collision
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
 }
 
+// 바닥에 부딪힘
+// _PlaneInfo : 충돌 바닥 정보
+// _CollisionInfo : 충돌 정보
+// 다른 몬스터는 bGravity 값을 false로 하는 것으로 충분하지만
+// 이 몬스터는 숨어있는 상태로 공격 받으면 안되서 충돌 처리도 끔
 void CGhoul::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo)
 {
 	if (_CollisionInfo.Flag == L"Floor")
@@ -289,6 +307,9 @@ void CGhoul::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _Colli
 	};
 }
 
+// 몬스터가 피해를 받음
+// _Particle : 공격 파티클
+// _CollisionInfo : 충돌 정보
 void CGhoul::ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)
 {
 	// 피해를 받지 않는 상태임
@@ -379,6 +400,7 @@ void CGhoul::ParticleHit(void* const _Particle, const Collision::Info& _Collisio
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
 }
 
+// 플레이어 마법 공격에 맞음
 void CGhoul::FreezeHit()
 {
 	// 피해를 받지 않는 상태임
@@ -467,6 +489,7 @@ void CGhoul::FreezeHit()
 }
 
 // AI는 하나의 행동을 끝마친 후에 새로운 행동을 받는다
+// fDeltaTime : 델타 타임
 void CGhoul::Update_AI(float fDeltaTime)
 {
 	// 다음 공격 대기 시간 감소
@@ -660,6 +683,8 @@ RETURN_DIG_OUT:	// 땅파고 나옴
 }
 
 // 행동 대기
+// fDeltaTime : 델타 타임
+// 반환 값 : 지정 시간까지 대기 했으면 true, 아니면 false
 bool CGhoul::Action_Idle(float fDeltaTime)
 {
 	// 지정된 시간만큼 행동 대기
@@ -670,6 +695,9 @@ bool CGhoul::Action_Idle(float fDeltaTime)
 	return false;
 }
 
+// 땅파고 나옴
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CGhoul::Action_DigOut(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -681,6 +709,8 @@ bool CGhoul::Action_DigOut(float fDeltaTime)
 }
 
 // 이동
+// fDeltaTime : 델타 타임
+// 반환 값 : 이동 완료 했으면 true, 아직 이동할 좌표가 더 있다면 false
 bool CGhoul::Action_Move(float fDeltaTime)
 {
 	// 더 이상 이동할 좌표가 없으면 이동을 끝냄
@@ -723,6 +753,8 @@ bool CGhoul::Action_Move(float fDeltaTime)
 }
 
 // 근접 공격
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CGhoul::Action_Melee(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -736,6 +768,8 @@ bool CGhoul::Action_Melee(float fDeltaTime)
 }
 
 // 공격받아서 경직
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CGhoul::Action_Hit(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
@@ -746,6 +780,8 @@ bool CGhoul::Action_Hit(float fDeltaTime)
 }
 
 // 죽음
+// fDeltaTime : 델타 타임
+// 반환 값 : 프레임 끝에 도달하면 true, 아니면 false
 bool CGhoul::Action_Dead(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {

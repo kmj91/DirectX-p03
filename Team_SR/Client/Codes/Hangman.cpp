@@ -35,6 +35,7 @@ HRESULT CHangman::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 3.5f,3.5f,3.5f };
 
 	// 몬스터 원본 스텟
@@ -393,6 +394,7 @@ void CHangman::ParticleHit(void* const _Particle, const Collision::Info& _Collis
 }
 
 // AI는 하나의 행동을 끝마친 후에 새로운 행동을 받는다
+// fDeltaTime : 델타 타임
 void CHangman::Update_AI(float fDeltaTime)
 {
 	// 다음 공격 대기 시간 감소
@@ -730,6 +732,7 @@ void CHangman::Free()
 	CMonster::Free();
 }
 
+// 플레이어 마법 공격에 맞음
 void CHangman::FreezeHit()
 {
 	CMonster::FreezeHit();
