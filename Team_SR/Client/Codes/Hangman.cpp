@@ -10,7 +10,7 @@ CHangman::CHangman(LPDIRECT3DDEVICE9 pDevice)
 	:CMonster(pDevice)
 	, m_fCountdown(0.f), m_fNextAtkWait(0.f), m_fPlayerTrackCount(0.f), m_fpAction(nullptr)
 	, m_eAwareness(AWARENESS::End), m_ePhase(PHASE::End)
-	, m_fpMonsterAI{}, isDamaged(false)
+	, m_fpMonsterAI{}, m_isDamaged(false)
 {
 }
 
@@ -278,7 +278,7 @@ void CHangman::Hit(CGameObject * const _Target, const Collision::Info & _Collisi
 	}
 
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
-	if (!isDamaged) {
+	if (!m_isDamaged) {
 		// 체력이 50%
 		if (m_stStatus.fHP <= m_stOriginStatus.fHP * 0.5f) {
 			m_byMonsterFlag |= static_cast<BYTE>(MonsterFlag::TextureChangeLock);	// 텍스처 교체 락 ON
@@ -357,7 +357,7 @@ void CHangman::ParticleHit(void* const _Particle, const Collision::Info& _Collis
 	}
 
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
-	if (!isDamaged) {
+	if (!m_isDamaged) {
 		// 체력이 50%
 		if (m_stStatus.fHP <= m_stOriginStatus.fHP * 0.5f) {
 			m_byMonsterFlag |= static_cast<BYTE>(MonsterFlag::TextureChangeLock);	// 텍스처 교체 락 ON
@@ -688,7 +688,7 @@ bool CHangman::Action_Dead(float fDeltaTime)
 bool CHangman::Action_Damage(float fDeltaTime)
 {
 	if (m_bFrameLoopCheck) {
-		isDamaged = true;	// 손상 상태 ON
+		m_isDamaged = true;	// 손상 상태 ON
 		m_byMonsterFlag &= ~static_cast<BYTE>(MonsterFlag::TextureChangeLock); // 텍스처 교체 락 OFF
 		m_stStatus.fSpeed = 7.f;		// 속도 약간 증가
 		m_bNoLoop = false;	// 프레임을 반복
@@ -769,7 +769,7 @@ void CHangman::FreezeHit()
 	}
 
 	m_bNoLoop = true;	// 프레임을 반복하지 않음
-	if (!isDamaged) {
+	if (!m_isDamaged) {
 		// 체력이 50%
 		if (m_stStatus.fHP <= m_stOriginStatus.fHP * 0.5f) {
 			m_byMonsterFlag |= static_cast<BYTE>(MonsterFlag::TextureChangeLock);	// 텍스처 교체 락 ON
