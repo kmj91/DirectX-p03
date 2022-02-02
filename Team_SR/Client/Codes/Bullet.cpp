@@ -51,6 +51,7 @@ HRESULT CBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 
 // 업데이트
 // fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CBullet::UpdateGameObject(float fDeltaTime)
 {
 	CGameObject::UpdateGameObject(fDeltaTime);
@@ -61,6 +62,7 @@ _uint CBullet::UpdateGameObject(float fDeltaTime)
 // 레이트 업데이트
 // 카메라 방향으로 바라보도록 빌보드 처리
 // fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CBullet::LateUpdateGameObject(float fDeltaTime)
 {
 	CGameObject::LateUpdateGameObject(fDeltaTime);
