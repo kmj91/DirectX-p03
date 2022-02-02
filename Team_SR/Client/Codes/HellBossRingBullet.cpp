@@ -115,7 +115,9 @@ void CHellBossRingBullet::Frame_Move(float fDeltaTime)
 // 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRingBullet::AddComponents()
 {
-	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
+	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture

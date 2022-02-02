@@ -1,3 +1,7 @@
+// 헬보스 터보 사탄 로켓
+// 맵에 부딪히면 폭발
+// 몸체 가로 세로 십자 형태 2개 뒷쪽 추진기 1개 총 3개의 텍스처로 구성되어있음
+
 #include "stdafx.h"
 #include "..\Headers\HellBossRocket.h"
 #include "NormalUVVertexBuffer.h"
@@ -8,7 +12,8 @@ CHellBossRocket::CHellBossRocket(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRocket::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -17,6 +22,9 @@ HRESULT CHellBossRocket::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인수
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRocket::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -25,6 +33,7 @@ HRESULT CHellBossRocket::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 2.5f,2.5f,2.5f };	// 가로
 	m_pTransformVertical = m_pTransformCom->m_TransformDesc;		// 세로
 	m_pTransformBack = m_pTransformCom->m_TransformDesc;			// 뒤
@@ -67,6 +76,9 @@ HRESULT CHellBossRocket::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossRocket::UpdateGameObject(float fDeltaTime)
 {
 	//CBullet::UpdateGameObject(fDeltaTime);	// 기본 게임오브젝트 업데이트 X
@@ -103,6 +115,9 @@ _uint CHellBossRocket::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossRocket::LateUpdateGameObject(float fDeltaTime)
 {
 	//CBullet::LateUpdateGameObject(fDeltaTime);	// 빌보드 X
@@ -115,6 +130,8 @@ _uint CHellBossRocket::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRocket::RenderGameObject()
 {
 	// 뒷면을 컬링하지 않습니다
@@ -221,6 +238,9 @@ HRESULT CHellBossRocket::RenderGameObject()
 	return S_OK;
 }
 
+// 맵에 부딪힘
+// _PlaneInfo : 부딪힌 바닥 정보
+// _CollisionInfo : 충돌 정보
 void CHellBossRocket::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo)
 {
 	CBullet::MapHit(_PlaneInfo, _CollisionInfo);
@@ -237,8 +257,12 @@ void CHellBossRocket::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info
 		nullptr, (void*)pArg);
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRocket::AddComponents()
 {
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
 	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
