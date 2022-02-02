@@ -1,3 +1,7 @@
+// 헬보스 카코 데빌 눈알 레이저
+// 맵에 부딪히면 폭발
+// 3개의 눈에서 레이저가 나감
+
 #include "stdafx.h"
 #include "..\Headers\HellBossEyeLaser.h"
 
@@ -7,7 +11,8 @@ CHellBossEyeLaser::CHellBossEyeLaser(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossEyeLaser::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -16,6 +21,9 @@ HRESULT CHellBossEyeLaser::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인수
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossEyeLaser::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -24,6 +32,7 @@ HRESULT CHellBossEyeLaser::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 2.5f,3.f,2.5f };
 
 	// 불렛 원본 스텟
@@ -57,6 +66,9 @@ HRESULT CHellBossEyeLaser::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossEyeLaser::UpdateGameObject(float fDeltaTime)
 {
 	//CBullet::UpdateGameObject(fDeltaTime);	// 기본 게임오브젝트 업데이트 X
@@ -96,6 +108,9 @@ _uint CHellBossEyeLaser::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossEyeLaser::LateUpdateGameObject(float fDeltaTime)
 {
 	//CBullet::LateUpdateGameObject(fDeltaTime);	// 빌보드 X
@@ -106,6 +121,8 @@ _uint CHellBossEyeLaser::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossEyeLaser::RenderGameObject()
 {
 	// 뒷면을 컬링하지 않습니다
@@ -120,6 +137,10 @@ HRESULT CHellBossEyeLaser::RenderGameObject()
 	return S_OK;
 }
 
+
+// 맵에 부딪힘
+// _PlaneInfo : 부딪힌 바닥 정보
+// _CollisionInfo : 충돌 정보
 void CHellBossEyeLaser::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo)
 {
 	CBullet::MapHit(_PlaneInfo, _CollisionInfo);
@@ -136,9 +157,13 @@ void CHellBossEyeLaser::MapHit(const PlaneInfo & _PlaneInfo, const Collision::In
 		nullptr, (void*)pArg);
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossEyeLaser::AddComponents()
 {
-	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
+	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture
