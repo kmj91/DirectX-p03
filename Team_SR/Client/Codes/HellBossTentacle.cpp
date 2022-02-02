@@ -1,3 +1,6 @@
+// 헬보스 몰락한 군주 촉수
+// 정해진 방향으로 땅속에서 나오면서 뻗어나감
+
 #include "stdafx.h"
 #include "..\Headers\HellBossTentacle.h"
 
@@ -8,7 +11,8 @@ CHellBossTentacle::CHellBossTentacle(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossTentacle::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -17,6 +21,9 @@ HRESULT CHellBossTentacle::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossTentacle::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -25,6 +32,7 @@ HRESULT CHellBossTentacle::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 8.f,8.f,8.f };
 
 	// 불렛 원본 스텟
@@ -39,6 +47,9 @@ HRESULT CHellBossTentacle::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossTentacle::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -68,6 +79,9 @@ _uint CHellBossTentacle::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossTentacle::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -80,6 +94,8 @@ _uint CHellBossTentacle::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossTentacle::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -88,6 +104,8 @@ HRESULT CHellBossTentacle::RenderGameObject()
 	return S_OK;
 }
 
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CHellBossTentacle::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -98,9 +116,13 @@ void CHellBossTentacle::Frame_Move(float fDeltaTime)
 	}
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossTentacle::AddComponents()
 {
-	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
+	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
 	// 텍스처
