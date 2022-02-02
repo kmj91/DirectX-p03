@@ -1,3 +1,5 @@
+// 헬보스 리틀 데몬 링 총알
+
 #include "stdafx.h"
 #include "..\Headers\HellBossRingBullet.h"
 
@@ -7,7 +9,8 @@ CHellBossRingBullet::CHellBossRingBullet(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRingBullet::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -16,6 +19,9 @@ HRESULT CHellBossRingBullet::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRingBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -24,6 +30,7 @@ HRESULT CHellBossRingBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	// 불렛 원본 스텟
@@ -44,6 +51,9 @@ HRESULT CHellBossRingBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossRingBullet::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -65,6 +75,9 @@ _uint CHellBossRingBullet::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossRingBullet::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -77,6 +90,8 @@ _uint CHellBossRingBullet::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRingBullet::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -85,6 +100,8 @@ HRESULT CHellBossRingBullet::RenderGameObject()
 	return S_OK;
 }
 
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CHellBossRingBullet::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -94,6 +111,8 @@ void CHellBossRingBullet::Frame_Move(float fDeltaTime)
 	}
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossRingBullet::AddComponents()
 {
 	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
