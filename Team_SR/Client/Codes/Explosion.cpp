@@ -1,3 +1,6 @@
+// 폭발
+// Bullet을 상속받아서 구체 충돌함...
+
 #include "stdafx.h"
 #include "..\Headers\Explosion.h"
 
@@ -8,7 +11,8 @@ CExplosion::CExplosion(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CExplosion::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -17,6 +21,9 @@ HRESULT CExplosion::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CExplosion::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -25,6 +32,7 @@ HRESULT CExplosion::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 2.5f,2.5f,2.5f };
 
 	// 불렛 원본 스텟
@@ -58,6 +66,9 @@ HRESULT CExplosion::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CExplosion::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -68,6 +79,9 @@ _uint CExplosion::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CExplosion::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -80,6 +94,8 @@ _uint CExplosion::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CExplosion::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -88,6 +104,8 @@ HRESULT CExplosion::RenderGameObject()
 	return S_OK;
 }
 
+// 맵에 부딪힘
+// 아래 주석 참고
 void CExplosion::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo)
 {
 	// Explosion은 맵과 부딪혀도 삭제되지않음
@@ -95,6 +113,8 @@ void CExplosion::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _C
 	// 선언만 해둠
 }
 
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CExplosion::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -105,9 +125,13 @@ void CExplosion::Frame_Move(float fDeltaTime)
 	}
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CExplosion::AddComponents()
 {
-	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
+	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
 	// 텍스처

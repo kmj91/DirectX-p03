@@ -12,7 +12,7 @@ private:
 	explicit CHellBossTentacle(LPDIRECT3DDEVICE9 pDevice);
 	virtual ~CHellBossTentacle() = default;
 public:
-	// CMonster을(를) 통해 상속됨
+	// CBullet을(를) 통해 상속됨
 	// 프로토타입 초기화
 	virtual HRESULT ReadyGameObjectPrototype() override;
 	// 복제 초기화
