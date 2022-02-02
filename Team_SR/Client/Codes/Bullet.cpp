@@ -11,6 +11,8 @@ CBullet::CBullet(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBullet::ReadyGameObjectPrototype()
 {
 	if (FAILED(CGameObject::ReadyGameObjectPrototype()))
@@ -19,6 +21,9 @@ HRESULT CBullet::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인수
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CGameObject::ReadyGameObject(pArg)))
@@ -44,6 +49,8 @@ HRESULT CBullet::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
 _uint CBullet::UpdateGameObject(float fDeltaTime)
 {
 	CGameObject::UpdateGameObject(fDeltaTime);
@@ -51,6 +58,9 @@ _uint CBullet::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// 카메라 방향으로 바라보도록 빌보드 처리
+// fDeltaTime : 델타 타임
 _uint CBullet::LateUpdateGameObject(float fDeltaTime)
 {
 	CGameObject::LateUpdateGameObject(fDeltaTime);
@@ -67,6 +77,8 @@ _uint CBullet::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBullet::RenderGameObject()
 {
 	if (FAILED(CGameObject::RenderGameObject()))
@@ -114,11 +126,18 @@ HRESULT CBullet::RenderGameObject()
 	return S_OK;
 }
 
+// 맵에 충돌함
+// _PlaneInfo : 바닥 정보
+// _CollisionInfo : 충돌 정보
 void CBullet::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _CollisionInfo)
 {
 	m_byObjFlag |= static_cast<BYTE>(ObjFlag::Remove);	// 오브젝트 삭제 플래그 ON
 }
 
+// 공격 충돌 처리 검사
+// 아직 충돌하지 않았다면 Attack 함수를 호출해 플레이어 충돌체와 검사
+// _fAttack : 피해량
+// 반환 값 : 공격 성공 true, 이미 공격한 상태면 실패 false
 bool CBullet::Bullet_Attack(float _fAttack)
 {
 	if (!m_bOneHit)
@@ -132,6 +151,11 @@ bool CBullet::Bullet_Attack(float _fAttack)
 	return false;
 }
 
+// 플레이어 충돌체와 검사
+// 플레이어 충돌체와 충돌하였는지 검사
+// _Sphere : 충돌체
+// Attack : 피해량
+// 반환 값 : 공격 성공 true, 플레이어 충돌체가 비활성화거나 충돌하지 않았다면 false
 bool CBullet::Attack(const Sphere _Sphere, const float Attack)&
 {
 	auto _Player = dynamic_cast<CPlayer* const>(m_pManagement->GetGameObject(-1, L"Layer_Player", 0));
@@ -148,6 +172,8 @@ bool CBullet::Attack(const Sphere _Sphere, const float Attack)&
 	return false;
 };
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBullet::AddComponents()
 {
 	/* For.Com_VIBuffer */
