@@ -1,3 +1,7 @@
+// 포탈 웜홀
+// 다음 스테이지로 넘어가기 위한 포탈
+// Bullet을 상속받아서 구체 충돌함...
+
 #include "stdafx.h"
 #include "..\Headers\Wormhole.h"
 #include "Stage1st.h"
@@ -14,7 +18,8 @@ CWormhole::CWormhole(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CWormhole::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -23,6 +28,9 @@ HRESULT CWormhole::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CWormhole::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -44,6 +52,7 @@ HRESULT CWormhole::ReadyGameObject(void* pArg /*= nullptr*/)
 		}
 	}
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 2.5f,2.5f,2.5f };
 
 	// 기본 텍스처 프레임
@@ -55,6 +64,9 @@ HRESULT CWormhole::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CWormhole::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -124,6 +136,9 @@ _uint CWormhole::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CWormhole::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -136,6 +151,8 @@ _uint CWormhole::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CWormhole::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -149,6 +166,8 @@ void CWormhole::MapHit(const PlaneInfo & _PlaneInfo, const Collision::Info & _Co
 {
 }
 
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CWormhole::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -158,6 +177,8 @@ void CWormhole::Frame_Move(float fDeltaTime)
 	}
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CWormhole::AddComponents()
 {
 	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
