@@ -1,3 +1,6 @@
+// 박쥐 침 투사체
+// 회색 박쥐 몬스터의 원거리 공격 총알
+
 #include "stdafx.h"
 #include "..\Headers\BatSpit.h"
 
@@ -7,7 +10,8 @@ CBatSpit::CBatSpit(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBatSpit::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -18,6 +22,8 @@ HRESULT CBatSpit::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBatSpit::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -26,6 +32,7 @@ HRESULT CBatSpit::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 1.f,1.f,1.f };
 
 	// 불렛 원본 스텟
@@ -45,6 +52,9 @@ HRESULT CBatSpit::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CBatSpit::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -61,6 +71,9 @@ _uint CBatSpit::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CBatSpit::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -73,6 +86,8 @@ _uint CBatSpit::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBatSpit::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -90,9 +105,13 @@ HRESULT CBatSpit::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CBatSpit::AddComponents()
 {
-	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
+	// CBullet.cpp에서
+	// CNormalUVVertexBuffer, CVIBuffer_RectTexture 생성
+	if (FAILED(CBullet::AddComponents()))
 		return E_FAIL;
 
 #pragma region Add_Component_Texture
