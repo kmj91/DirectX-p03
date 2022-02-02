@@ -1,3 +1,6 @@
+// 장식품 오브젝트
+// 렌더할 이미지 텍스처만 교체함
+
 #include "stdafx.h"
 #include "..\Headers\Decorator.h"
 #include "MainCamera.h"
@@ -11,6 +14,8 @@ CDecorator::CDecorator(LPDIRECT3DDEVICE9 pDevice)
 	:CGameObject(pDevice)
 	, m_fFrameCnt(0.f), m_fStartFrame(0.f), m_fEndFrame(0.f), m_pTexture(nullptr), m_stDecoratorInfo{}{}
 
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CDecorator::ReadyGameObjectPrototype()
 {
 	if (FAILED(CGameObject::ReadyGameObjectPrototype()))
@@ -21,6 +26,10 @@ HRESULT CDecorator::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// 인자로 멤버 변수 정보 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CDecorator::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CGameObject::ReadyGameObject(pArg)))
@@ -53,6 +62,9 @@ HRESULT CDecorator::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CDecorator::UpdateGameObject(float fDeltaTime)
 {
 	CGameObject::UpdateGameObject(fDeltaTime);
@@ -67,6 +79,9 @@ _uint CDecorator::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CDecorator::LateUpdateGameObject(float fDeltaTime)
 {
 	CGameObject::LateUpdateGameObject(fDeltaTime);
@@ -88,6 +103,8 @@ _uint CDecorator::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CDecorator::RenderGameObject()
 {
 	if (FAILED(CGameObject::RenderGameObject()))
@@ -130,6 +147,9 @@ HRESULT CDecorator::RenderGameObject()
 	return S_OK;
 }
 
+// 컴포넌트 추가
+// DecoratorInfo 구조체 타입에 맞는 텍스처 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CDecorator::AddComponents()
 {
 	if (FAILED(CGameObject::AddComponent(
@@ -682,6 +702,8 @@ HRESULT CDecorator::AddComponents()
 }
 
 // 장식이 피해를 받음
+// _Target : 피해를 준 오브젝트
+// _CollisionInfo : 충돌 정보
 void CDecorator::Hit(CGameObject * const _Target, const Collision::Info & _CollisionInfo)
 {
 	CGameObject::Hit(_Target, _CollisionInfo);
@@ -714,6 +736,9 @@ void CDecorator::Hit(CGameObject * const _Target, const Collision::Info & _Colli
 	}
 }
 
+// 장식이 피해를 받음
+// _Particle : 파티클 충돌체
+// _CollisionInfo : 충돌 정보
 void CDecorator::ParticleHit(void* const _Particle, const Collision::Info& _CollisionInfo)
 {
 	CGameObject::ParticleHit(_Particle, _CollisionInfo);
@@ -757,6 +782,7 @@ void CDecorator::ParticleHit(void* const _Particle, const Collision::Info& _Coll
 }
 
 // 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CDecorator::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += 10.f * fDeltaTime;
@@ -766,6 +792,8 @@ void CDecorator::Frame_Move(float fDeltaTime)
 	}
 }
 
+// 빌보드
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CDecorator::IsBillboarding()
 {
 	CMainCamera* pCamera = dynamic_cast<CMainCamera*> (m_pManagement->GetGameObject((_int)-1, L"Layer_MainCamera"));
