@@ -7,7 +7,6 @@
 
 CExplosion::CExplosion(LPDIRECT3DDEVICE9 pDevice)
 	:CBullet(pDevice)
-	, bRelayFlag(false)
 {
 }
 

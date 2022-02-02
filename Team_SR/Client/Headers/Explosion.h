@@ -40,8 +40,6 @@ public:
 	static CExplosion* Create(LPDIRECT3DDEVICE9 pDevice);
 	virtual CGameObject * Clone(void * pArg = nullptr) override;
 	virtual void Free() override;
-private:
-	bool bRelayFlag;	// 전달 여부
 };
 
 #define __EXPLOSION_H__
