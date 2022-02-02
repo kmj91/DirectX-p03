@@ -390,7 +390,7 @@ HRESULT CMainApp::ReadyStaticResources()
 		CHellBossRocket::Create(m_pDevice))))
 		return E_FAIL;
 
-	// 로켓
+	// 스폰 볼
 	if (FAILED(m_pManagement->AddGameObjectPrototype(
 		(_int)ESceneID::Static,
 		CGameObject::Tag + TYPE_NAME<CHellBossSpawnBall>(),

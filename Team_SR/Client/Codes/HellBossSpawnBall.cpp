@@ -1,3 +1,6 @@
+// 헬보스 카코 데빌 스폰 볼
+// 몬스터를 소환함
+
 #include "stdafx.h"
 #include "..\Headers\HellBossSpawnBall.h"
 #include "Player.h"
@@ -8,7 +11,8 @@ CHellBossSpawnBall::CHellBossSpawnBall(LPDIRECT3DDEVICE9 pDevice)
 {
 }
 
-
+// 프로토타입 초기화
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossSpawnBall::ReadyGameObjectPrototype()
 {
 	if (FAILED(CBullet::ReadyGameObjectPrototype()))
@@ -17,6 +21,9 @@ HRESULT CHellBossSpawnBall::ReadyGameObjectPrototype()
 	return S_OK;
 }
 
+// 복제 초기화
+// pArg : 인자
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossSpawnBall::ReadyGameObject(void* pArg /*= nullptr*/)
 {
 	if (FAILED(CBullet::ReadyGameObject(pArg)))
@@ -25,6 +32,7 @@ HRESULT CHellBossSpawnBall::ReadyGameObject(void* pArg /*= nullptr*/)
 	if (FAILED(AddComponents()))
 		return E_FAIL;
 
+	// 스케일
 	m_pTransformCom->m_TransformDesc.vScale = { 2.5f,2.5f,2.5f };
 
 	// 불렛 원본 스텟
@@ -45,6 +53,9 @@ HRESULT CHellBossSpawnBall::ReadyGameObject(void* pArg /*= nullptr*/)
 	return S_OK;
 }
 
+// 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossSpawnBall::UpdateGameObject(float fDeltaTime)
 {
 	CBullet::UpdateGameObject(fDeltaTime);
@@ -66,6 +77,9 @@ _uint CHellBossSpawnBall::UpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 레이트 업데이트
+// fDeltaTime : 델타 타임
+// 반환 값 : 사용하지 않음
 _uint CHellBossSpawnBall::LateUpdateGameObject(float fDeltaTime)
 {
 	CBullet::LateUpdateGameObject(fDeltaTime);
@@ -78,6 +92,8 @@ _uint CHellBossSpawnBall::LateUpdateGameObject(float fDeltaTime)
 	return _uint();
 }
 
+// 렌더
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossSpawnBall::RenderGameObject()
 {
 	if (FAILED(CBullet::RenderGameObject()))
@@ -86,6 +102,8 @@ HRESULT CHellBossSpawnBall::RenderGameObject()
 	return S_OK;
 }
 
+// 텍스처 프레임 이동
+// fDeltaTime : 델타 타임
 void CHellBossSpawnBall::Frame_Move(float fDeltaTime)
 {
 	m_fFrameCnt += m_fFrameSpeed * fDeltaTime;
@@ -111,6 +129,8 @@ void CHellBossSpawnBall::SpawnMonster()
 		nullptr, (void*)_MonsterBasicArgument);
 }
 
+// 컴포넌트 추가
+// 반환 값 : 성공 S_OK, 실패 E_FAIL
 HRESULT CHellBossSpawnBall::AddComponents()
 {
 	if (FAILED(CBullet::AddComponents()))	// Monster.cpp에서 RectTexture 호출
