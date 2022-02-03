@@ -14,7 +14,9 @@ public:
 	virtual ~CComponent() = default;
 
 public:
+	// 프로토타입 초기화
 	virtual HRESULT ReadyComponentPrototype() = 0;
+	// 복제 초기화
 	virtual HRESULT ReadyComponent(void* pArg = nullptr) = 0;
 
 public:
@@ -23,7 +25,7 @@ public:
 
 	static const std::wstring Tag;		// 이름에 사용할 컴포넌트 문자열 태그
 protected:
-	LPDIRECT3DDEVICE9	m_pDevice;
+	LPDIRECT3DDEVICE9	m_pDevice;		// 그래픽 디바이스
 };
 END
 
