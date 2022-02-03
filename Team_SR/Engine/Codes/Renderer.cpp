@@ -74,29 +74,29 @@ HRESULT CRenderer::Render(HWND hWnd)
 		m_pDevice->SetSamplerState(i, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 		m_pDevice->SetSamplerState(i, D3DSAMP_MAXANISOTROPY, _Caps9.MaxAnisotropy);
 	};
-
+	// 가장 먼저 렌더해야할 오브젝트
 	if (FAILED(RenderPriority()))
 		return E_FAIL;
-
+	// 알파가 없는 오브젝트
 	if (FAILED(RenderNoAlpha()))
 		return E_FAIL;
-
+	// 알파가 들어가는 오브젝트
 	if (FAILED(RenderAlpha()))
 		return E_FAIL;
 
 	/*if (FAILED(RenderParticleAfterAlpha()))
 		return E_FAIL;*/
-
+	// 파티클
 	if (_ParticleRender)_ParticleRender();
-
+	// 디버그용 충돌체
 	CCollisionComponent::CollisionDebugRender(m_pDevice);
 
 	m_pDevice->SetVertexShader(nullptr);
 	m_pDevice->SetPixelShader(nullptr);
-
+	// UI
 	if (FAILED(RenderUI()))
 		return E_FAIL;
-
+	// 화면 이펙트
 	if (FAILED(RenderScreenPostEffect()))
 		return E_FAIL;
 
